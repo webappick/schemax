@@ -44,6 +44,7 @@ class Initialize {
 	 * The Constructor that load the entry classes
 	 *
 	 * @param \Composer\Autoload\ClassLoader $composer Composer autoload output.
+	 *
 	 * @since 1.0.0
 	 */
 	public function __construct( \Composer\Autoload\ClassLoader $composer ) {
@@ -80,8 +81,8 @@ class Initialize {
 	/**
 	 * Initialize all the classes.
 	 *
-	 * @since 1.0.0
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function load_classes() {
 		$this->classes = \apply_filters( 'schemax_classes_to_execute', $this->classes );
@@ -103,9 +104,10 @@ class Initialize {
 	 * Validate the class and initialize it.
 	 *
 	 * @param class-string $classtovalidate Class name to validate.
+	 *
+	 * @return void
 	 * @since 1.0.0
 	 * @SuppressWarnings("MissingImport")
-	 * @return void
 	 */
 	private function initialize_plugin_class( $classtovalidate ) {
 		$reflection = new \ReflectionClass( $classtovalidate );
@@ -116,7 +118,7 @@ class Initialize {
 
 		$temp = new $classtovalidate;
 
-		if ( !\method_exists( $temp, 'initialize' ) ) {
+		if ( ! \method_exists( $temp, 'initialize' ) ) {
 			return;
 		}
 
@@ -127,8 +129,9 @@ class Initialize {
 	 * Based on the folder loads the classes automatically using the Composer autoload to detect the classes of a Namespace.
 	 *
 	 * @param string $namespacetofind Class name to find.
-	 * @since 1.0.0
+	 *
 	 * @return array Return the classes.
+	 * @since 1.0.0
 	 */
 	private function get_classes( string $namespacetofind ) {
 		$prefix          = $this->composer->getPrefixesPsr4();
@@ -136,7 +139,7 @@ class Initialize {
 		$namespacetofind = 'Schemax\\' . $namespacetofind;
 
 		// In case composer has autoload optimized
-		if ( isset( $classmap[ 'Schemax\\Engine\\Initialize' ] ) ) {
+		if ( isset( $classmap['Schemax\\Engine\\Initialize'] ) ) {
 			$classes = \array_keys( $classmap );
 
 			foreach ( $classes as $class ) {
@@ -158,7 +161,7 @@ class Initialize {
 			$php_files = $this->scandir( $folder );
 			$this->find_classes( $php_files, $folder, $namespacetofind );
 
-			if ( !WP_DEBUG ) {
+			if ( ! WP_DEBUG ) {
 				\wp_die( \esc_html__( 'Schemax is on production environment with missing `composer dumpautoload -o` that will improve the performance on autoloading itself.', SMAX_TEXTDOMAIN ) );
 			}
 
@@ -174,8 +177,9 @@ class Initialize {
 	 *
 	 * @param string $folder Path.
 	 * @param string $exclude_str Exclude all files whose filename contain this. Defaults to `~`.
-	 * @since 1.0.0
+	 *
 	 * @return array List of files.
+	 * @since 1.0.0
 	 */
 	private function scandir( string $folder, string $exclude_str = '~' ) {
 		// Also exclude these specific scandir findings.
@@ -205,15 +209,16 @@ class Initialize {
 	/**
 	 * Load namespace classes by files.
 	 *
-	 * @param array  $php_files List of files with the Class.
+	 * @param array $php_files List of files with the Class.
 	 * @param string $folder Path of the folder.
 	 * @param string $base Namespace base.
-	 * @since 1.0.0
+	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function find_classes( array $php_files, string $folder, string $base ) {
 		foreach ( $php_files as $php_file ) {
-			$class_name = \substr( $php_file, 0, -4 );
+			$class_name = \substr( $php_file, 0, - 4 );
 			$path       = $folder . '/' . $php_file;
 
 			if ( \is_file( $path ) ) {
@@ -227,7 +232,7 @@ class Initialize {
 				continue;
 			}
 
-			if ( !\is_dir( $path ) || \strtolower( $php_file ) === $php_file ) {
+			if ( ! \is_dir( $path ) || \strtolower( $php_file ) === $php_file ) {
 				continue;
 			}
 

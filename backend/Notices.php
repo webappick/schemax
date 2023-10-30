@@ -33,7 +33,7 @@ class Notices extends Base {
 
 		$builder = new \Page_Madness_Detector(); // phpcs:ignore
 
-		if ( $builder->has_entrophy() ) {
+		if ( $builder->has_entropy() ) {
 			\wpdesk_wp_notice( \__( 'A Page Builder/Visual Composer was found on this website!', SMAX_TEXTDOMAIN ), 'error', true );
 		}
 

@@ -15,9 +15,16 @@ $s_debug = new WPBP_Debug( __( 'Schemax', SMAX_TEXTDOMAIN ) );
  * Log text inside the debugging plugins.
  *
  * @param string $text The text.
+ *
  * @return void
  */
 function s_log( string $text ) {
 	global $s_debug;
 	$s_debug->log( $text );
+}
+
+
+function s_debug( $data ) {
+	error_log( print_r( $data
+		, true ) );
 }
