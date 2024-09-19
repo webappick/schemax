@@ -1,1 +1,1 @@
-!function(){"use strict";window.jQuery,jQuery((()=>{}))}();
+(()=>{"use strict";window.jQuery,jQuery((()=>{}))})();

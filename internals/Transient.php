@@ -13,7 +13,8 @@
 namespace Schemax\Internals;
 
 use Schemax\Engine\Base;
-use \stdClass; // phpcs:ignore
+
+// phpcs:ignore
 
 /**
  * Transient used by the plugin

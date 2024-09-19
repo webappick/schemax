@@ -66,17 +66,18 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Schemax\\Backend\\": "backend\/",
-            "Schemax\\Frontend\\": "frontend\/",
-            "Schemax\\Rest\\": "rest\/",
-            "Schemax\\Ajax\\": "ajax\/",
-            "Schemax\\Internals\\": "internals\/",
-            "Schemax\\Cli\\": "cli\/",
-            "Schemax\\Integrations\\": "integrations\/",
-            "Schemax\\Engine\\": "engine\/"
+            "Schemax\\App\\": "app/",
+            "Schemax\\Backend\\": "backend/",
+            "Schemax\\Frontend\\": "frontend/",
+            "Schemax\\Rest\\": "rest/",
+            "Schemax\\Ajax\\": "ajax/",
+            "Schemax\\Internals\\": "internals/",
+            "Schemax\\Cli\\": "cli/",
+            "Schemax\\Integrations\\": "integrations/",
+            "Schemax\\Engine\\": "engine/"
         },
         "files": [
-            "vendor\/wp-custom-bulk-actions\/custom-bulk-actions.php"
+            "vendor/wp-custom-bulk-actions/custom-bulk-actions.php"
         ]
     },
     "config": {
