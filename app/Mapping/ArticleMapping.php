@@ -1,18 +1,18 @@
 <?php
 
-namespace WebAppick\WPListInfo\Middleware\Mapping;
+namespace Schemax\App\Mapping;
 
 
 /**
  * Class ArticleMapping
  *
- * @package    CTXFeed
- * @subpackage WebAppick\WPListInfo\Middleware\Mapping
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
  * @author     Ohidul Islam <wahid0003@gmail.com>
  * @link       https://webappick.com
  * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category   MyCategory
+ * @category   Library
  */
 class ArticleMapping {
-	
+
 }

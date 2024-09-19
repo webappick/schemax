@@ -9,14 +9,14 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
  * Class ReviewService
  *
  * @category Library
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @author
  * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @link     https://webappick.com
  */
 class ReviewService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific review.
 	 *
@@ -28,12 +28,12 @@ class ReviewService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$review = $this->getObject($id, 'comment');
 		if (!$review) {
 			return null;
 		}
-		
+
 		$reviewInfo = array(
 			'review_id'           => $review->comment_ID,
 			'review_post_id'      => $review->comment_post_ID,
@@ -52,10 +52,10 @@ class ReviewService extends AbstractInfo implements ServiceInterface {
 			'user_id'             => $review->user_id,
 			'review_rating'       => get_comment_meta($review->comment_ID, 'rating', true),
 		);
-		
+
 		return $key && isset($reviewInfo[$key]) ? $reviewInfo[$key] : $reviewInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the review.
 	 *

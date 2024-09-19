@@ -8,15 +8,15 @@ use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
 /**
  * Class DateFormat
  *
- * @package CTXFeed
+ * @package Schemax
  * @subpackage WebAppick\WPListInfo\Formatters
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category MyCategory
+ * @category Library
  */
 class DateFormat extends FormattingAbstract {
-	
+
 	/**
 	 * @inheritDoc
 	 */

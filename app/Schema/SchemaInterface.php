@@ -1,6 +1,6 @@
 <?php
 
-namespace MyPlugin\Schema;
+namespace Schemax\App\Schema;
 
 interface SchemaInterface
 {

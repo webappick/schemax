@@ -7,7 +7,7 @@ define('DB_NAME', 'wordpress_unit_tests');
 define('DB_USER', 'root');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'test');
+define('DB_PASSWORD', 'root');
 
 /** MySQL hostname */
 define('DB_HOST', '127.0.0.1:3306');

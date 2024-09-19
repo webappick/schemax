@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class CommentService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class CommentService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific comment.
 	 *
@@ -25,12 +25,12 @@ class CommentService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$comment = $this->getObject($id, 'comment');
 		if (!$comment) {
 			return null;
 		}
-		
+
 		$commentInfo = array(
 			'comment_id'           => $comment->comment_ID,
 			'comment_post_id'      => $comment->comment_post_ID,
@@ -48,10 +48,10 @@ class CommentService extends AbstractInfo implements ServiceInterface {
 			'comment_parent'       => $comment->comment_parent,
 			'user_id'              => $comment->user_id,
 		);
-		
+
 		return $key && isset($commentInfo[$key]) ? $commentInfo[$key] : $commentInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the comment.
 	 *

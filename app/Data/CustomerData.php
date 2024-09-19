@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class CustomerService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class CustomerService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific customer.
 	 *
@@ -25,12 +25,12 @@ class CustomerService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$customer = $this->getObject($id, 'customer');
 		if (!$customer) {
 			return null;
 		}
-		
+
 		$customerInfo = array(
 			'customer_id'           => $customer->get_id(),
 			'customer_name'         => $customer->get_name(),
@@ -44,10 +44,10 @@ class CustomerService extends AbstractInfo implements ServiceInterface {
 			'customer_date_created' => $customer->get_date_created(),
 			'customer_date_modified'=> $customer->get_date_modified(),
 		);
-		
+
 		return $key && isset($customerInfo[$key]) ? $customerInfo[$key] : $customerInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the customer.
 	 *

@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class TaxonomyService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class TaxonomyService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific taxonomy.
 	 *
@@ -25,12 +25,12 @@ class TaxonomyService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$taxonomy = $this->getObject($id, 'taxonomy');
 		if (!$taxonomy) {
 			return null;
 		}
-		
+
 		$taxonomyInfo = array(
 			'taxonomy_id'          => $taxonomy->term_id,
 			'taxonomy_name'        => $taxonomy->name,
@@ -38,10 +38,10 @@ class TaxonomyService extends AbstractInfo implements ServiceInterface {
 			'taxonomy_description' => $taxonomy->description,
 			'taxonomy_count'       => $taxonomy->count,
 		);
-		
+
 		return $key && isset($taxonomyInfo[$key]) ? $taxonomyInfo[$key] : $taxonomyInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the taxonomy.
 	 *

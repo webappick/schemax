@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class CouponService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class CouponService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific coupon.
 	 *
@@ -25,12 +25,12 @@ class CouponService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$coupon = $this->getObject($id, 'shop_coupon');
 		if (!$coupon) {
 			return null;
 		}
-		
+
 		$couponInfo = array(
 			'coupon_id'                 => $coupon->get_id(),
 			'coupon_code'               => $coupon->get_code(),
@@ -54,10 +54,10 @@ class CouponService extends AbstractInfo implements ServiceInterface {
 			'coupon_email_restrictions' => $coupon->get_email_restrictions(),
 			'coupon_used_by'            => $coupon->get_used_by(),
 		);
-		
+
 		return $key && isset($couponInfo[$key]) ? $couponInfo[$key] : $couponInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the coupon.
 	 *

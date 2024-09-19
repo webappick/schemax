@@ -1,21 +1,19 @@
 <?php
 
-namespace WebAppick\WPListInfo\Middleware\Services;
+namespace Schemax\App\Services;
 
+use Schemax\App\Mapping\MappingInterface;
 
 /**
  * Class MappingService
  *
- * @package    CTXFeed
- * @subpackage WebAppick\WPListInfo\Middleware\Services
+ * @package    Schemax
+ * @subpackage Schemax\App\Services
  * @author     Ohidul Islam <wahid0003@gmail.com>
  * @link       https://webappick.com
  * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category   MyCategory
+ * @category   Library
  */
-namespace MyPlugin\Services;
-
-use MyPlugin\Mapping\MappingInterface;
 
 class MappingService
 {
@@ -23,7 +21,7 @@ class MappingService
 	{
 		return $mappingClass->getMapping($schemaType);
 	}
-	
+
 	public function saveSchemaMappings(MappingInterface $mappingClass, string $schemaType, array $mappings): void
 	{
 		$mappingClass->setMapping($schemaType, $mappings);

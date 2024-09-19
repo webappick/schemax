@@ -2,7 +2,7 @@
 /**
  * This class is used to get information about a post.
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
@@ -16,7 +16,7 @@ use WP_Query;
 /**
  * Class PostService.
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
@@ -24,7 +24,7 @@ use WP_Query;
  * @category Library
  */
 class PostService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Get the information of a post by ID.
 	 *
@@ -37,21 +37,21 @@ class PostService extends AbstractInfo implements ServiceInterface {
 		if ( ! $this->validate( $idObject ) ) {
 			return null;
 		}
-		
+
 		// Get the post object.
 		$post = $this->getObject( $idObject, 'post' );
-		
+
 		if ( ! $post ) {
 			return null;
 		}
-		
+
 		// Get the post's parent, if any.
 		if ( $post->post_parent ) {
 			$parent = get_post( $post->post_parent );
 		} else {
 			$parent = null;
 		}
-		
+
 		$postInfo = array(
 			'post_id'             => $post->ID,
 			'post_title'          => $post->post_title,
@@ -77,15 +77,15 @@ class PostService extends AbstractInfo implements ServiceInterface {
 			'post_comment_status' => $post->comment_status,
 			'post_visibility'     => get_post_status( $post->ID ), // visibility is controlled by post status
 		);
-		
+
 		// If a specific key is requested, return that.
 		if ( ! empty( $key ) && isset( $postInfo[ $key ] ) ) {
 			return $postInfo[ $key ];
 		}
-		
+
 		return $postInfo;
 	}
-	
+
 	/**
 	 * Retrieve or Search a list of posts based on specified arguments.
 	 *
@@ -105,15 +105,15 @@ class PostService extends AbstractInfo implements ServiceInterface {
 			'orderby'        => 'date',
 			'order'          => 'DESC',
 		);
-		
+
 		$queryArgs = wp_parse_args( $args, $defaults );
 		$query     = new WP_Query( $queryArgs );
 		$posts     = $query->get_posts();
-		
+
 		if ( ! empty( $posts ) ) {
 			return $posts;
 		}
-		
+
 		return array();
 	}
 

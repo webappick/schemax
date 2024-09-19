@@ -1,24 +1,24 @@
 <?php
 
-namespace WebAppick\WPListInfo\Middleware\Mapping;
+namespace Schemax\App\Mapping;
 
 
 /**
  * Class MappingManager
  *
- * @package    CTXFeed
- * @subpackage WebAppick\WPListInfo\Middleware\Mapping
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
  * @author     Ohidul Islam <wahid0003@gmail.com>
  * @link       https://webappick.com
  * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category   MyCategory
+ * @category   Library
  */
-namespace MyPlugin\Mapping;
+
 
 class MappingManager
 {
 	protected $mappings = [];
-	
+
 	/**
 	 * Register a mapping class for a specific schema type.
 	 *
@@ -29,7 +29,7 @@ class MappingManager
 	{
 		$this->mappings[$schemaType] = $mappingClass;
 	}
-	
+
 	/**
 	 * Retrieve the mapping for a specific schema type.
 	 * Falls back to the default mapping if no custom mapping is set.
@@ -42,10 +42,10 @@ class MappingManager
 		if (!isset($this->mappings[$schemaType])) {
 			throw new \Exception("No mapping registered for schema type: " . $schemaType);
 		}
-		
+
 		return $this->mappings[$schemaType]->getMapping($schemaType);
 	}
-	
+
 	/**
 	 * Save a new mapping for a specific schema type.
 	 *
@@ -57,10 +57,10 @@ class MappingManager
 		if (!isset($this->mappings[$schemaType])) {
 			throw new \Exception("No mapping registered for schema type: " . $schemaType);
 		}
-		
+
 		$this->mappings[$schemaType]->setMapping($schemaType, $mappingData);
 	}
-	
+
 	/**
 	 * Reset the mapping for a specific schema type to the default mapping.
 	 *
@@ -71,7 +71,7 @@ class MappingManager
 		if (!isset($this->mappings[$schemaType])) {
 			throw new \Exception("No mapping registered for schema type: " . $schemaType);
 		}
-		
+
 		// Reset the mapping to its default state
 		$defaultMapping = $this->mappings[$schemaType]->getDefaultMappings();
 		$this->mappings[$schemaType]->setMapping($schemaType, $defaultMapping);

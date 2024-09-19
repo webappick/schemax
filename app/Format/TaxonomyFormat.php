@@ -8,15 +8,15 @@ use WebAppick\WPListInfo\Abstracts\FormattingAbstract;
 /**
  * Class TaxonomyFormat
  *
- * @package CTXFeed
+ * @package Schemax
  * @subpackage WebAppick\WPListInfo\Formatters
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
  *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category MyCategory
+ * @category Library
  */
 class TaxonomyFormat  extends FormattingAbstract{
-	
+
 	/**
 	 *  Format the data according to the structure
 	 *

@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class PluginService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class PluginService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific plugin.
 	 *
@@ -25,12 +25,12 @@ class PluginService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$plugin = get_plugin_data(WP_PLUGIN_DIR . '/' . $id);
 		if (!$plugin) {
 			return null;
 		}
-		
+
 		$pluginInfo = array(
 			'plugin_name'        => $plugin['Name'],
 			'plugin_version'     => $plugin['Version'],
@@ -43,10 +43,10 @@ class PluginService extends AbstractInfo implements ServiceInterface {
 			'plugin_title'       => $plugin['Title'],
 			'plugin_uri'         => $plugin['PluginURI'],
 		);
-		
+
 		return $key && isset($pluginInfo[$key]) ? $pluginInfo[$key] : $pluginInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the plugin.
 	 *

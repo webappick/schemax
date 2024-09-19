@@ -81,8 +81,8 @@ modules:
             phpBinary: php
             language: ''
             configFile: 'wp-config-test.php'
-            plugins: ["schemax/schemax.php"]
-            activatePlugins: ["schemax/schemax.php"]
+            plugins: ["woocommerce/woocommerce.php","schemax/schemax.php"]
+            activatePlugins: ["woocommerce/woocommerce.php","schemax/schemax.php"]
         WPWebDriver:
             url: "%WP_URL%"
             browser: chrome

@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class PaymentService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class PaymentService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific payment.
 	 *
@@ -25,12 +25,12 @@ class PaymentService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$payment = $this->getObject($id, 'payment');
 		if (!$payment) {
 			return null;
 		}
-		
+
 		$paymentInfo = array(
 			'payment_id'          => $payment->get_id(),
 			'payment_method'      => $payment->get_method(),
@@ -41,10 +41,10 @@ class PaymentService extends AbstractInfo implements ServiceInterface {
 			'payment_transaction_id' => $payment->get_transaction_id(),
 			'payment_meta'        => $payment->get_meta_data(),
 		);
-		
+
 		return $key && isset($paymentInfo[$key]) ? $paymentInfo[$key] : $paymentInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the payment.
 	 *

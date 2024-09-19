@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class MetaService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class MetaService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific meta.
 	 *
@@ -25,22 +25,22 @@ class MetaService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$meta = $this->getObject($id, 'meta');
 		if (!$meta) {
 			return null;
 		}
-		
+
 		$metaInfo = array(
 			'meta_id'    => $meta->get_id(),
 			'meta_key'   => $meta->get_key(),
 			'meta_value' => $meta->get_value(),
 			'meta_type'  => $meta->get_type(),
 		);
-		
+
 		return $key && isset($metaInfo[$key]) ? $metaInfo[$key] : $metaInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the meta.
 	 *

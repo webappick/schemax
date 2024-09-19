@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class OrderService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class OrderService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific order.
 	 *
@@ -25,12 +25,12 @@ class OrderService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$order = $this->getObject($id, 'shop_order');
 		if (!$order) {
 			return null;
 		}
-		
+
 		$orderInfo = array(
 			'order_id'              => $order->get_id(),
 			'order_number'          => $order->get_order_number(),
@@ -53,10 +53,10 @@ class OrderService extends AbstractInfo implements ServiceInterface {
 			'order_tax_total'       => $order->get_total_tax(),
 			'order_meta'            => $order->get_meta_data(),
 		);
-		
+
 		return $key && isset($orderInfo[$key]) ? $orderInfo[$key] : $orderInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the order.
 	 *

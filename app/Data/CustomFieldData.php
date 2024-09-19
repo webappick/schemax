@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class CustomFieldService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class CustomFieldService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific custom field.
 	 *
@@ -25,22 +25,22 @@ class CustomFieldService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$customField = $this->getObject($id, 'custom_field');
 		if (!$customField) {
 			return null;
 		}
-		
+
 		$customFieldInfo = array(
 			'custom_field_id'    => $customField->get_id(),
 			'custom_field_key'   => $customField->get_key(),
 			'custom_field_value' => $customField->get_value(),
 			'custom_field_type'  => $customField->get_type(),
 		);
-		
+
 		return $key && isset($customFieldInfo[$key]) ? $customFieldInfo[$key] : $customFieldInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the custom field.
 	 *

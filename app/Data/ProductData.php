@@ -4,7 +4,7 @@
  *
  * This file contains the ProductService class.
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  */
 
@@ -17,7 +17,7 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class ProductService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com

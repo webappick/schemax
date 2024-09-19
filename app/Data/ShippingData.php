@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class ShippingService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class ShippingService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific shipping method.
 	 *
@@ -25,12 +25,12 @@ class ShippingService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$shipping = $this->getObject($id, 'shipping_method');
 		if (!$shipping) {
 			return null;
 		}
-		
+
 		$shippingInfo = array(
 			'shipping_id'          => $shipping->get_id(),
 			'shipping_method'      => $shipping->get_method_title(),
@@ -38,10 +38,10 @@ class ShippingService extends AbstractInfo implements ServiceInterface {
 			'shipping_tax_status'  => $shipping->get_tax_status(),
 			'shipping_instance_id' => $shipping->get_instance_id(),
 		);
-		
+
 		return $key && isset($shippingInfo[$key]) ? $shippingInfo[$key] : $shippingInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the shipping method.
 	 *

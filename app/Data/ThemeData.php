@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class ThemeService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class ThemeService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific theme.
 	 *
@@ -25,12 +25,12 @@ class ThemeService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$theme = wp_get_theme($id);
 		if (!$theme) {
 			return null;
 		}
-		
+
 		$themeInfo = array(
 			'theme_name'        => $theme->get('Name'),
 			'theme_version'     => $theme->get('Version'),
@@ -43,10 +43,10 @@ class ThemeService extends AbstractInfo implements ServiceInterface {
 			'theme_stylesheet'  => $theme->get_stylesheet(),
 			'theme_screenshot'  => $theme->get_screenshot(),
 		);
-		
+
 		return $key && isset($themeInfo[$key]) ? $themeInfo[$key] : $themeInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the theme.
 	 *

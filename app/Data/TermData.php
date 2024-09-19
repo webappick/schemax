@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class TermService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class TermService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific term.
 	 *
@@ -25,12 +25,12 @@ class TermService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$term = $this->getObject($id, 'term');
 		if (!$term) {
 			return null;
 		}
-		
+
 		$termInfo = array(
 			'term_id'          => $term->term_id,
 			'term_name'        => $term->name,
@@ -38,10 +38,10 @@ class TermService extends AbstractInfo implements ServiceInterface {
 			'term_description' => $term->description,
 			'term_count'       => $term->count,
 		);
-		
+
 		return $key && isset($termInfo[$key]) ? $termInfo[$key] : $termInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the term.
 	 *

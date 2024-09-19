@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class PageService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class PageService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific page.
 	 *
@@ -25,12 +25,12 @@ class PageService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$page = $this->getObject($id, 'page');
 		if (!$page) {
 			return null;
 		}
-		
+
 		$pageInfo = array(
 			'page_id'            => $page->ID,
 			'page_title'         => $page->post_title,
@@ -45,10 +45,10 @@ class PageService extends AbstractInfo implements ServiceInterface {
 			'page_permalink'     => get_permalink($page->ID),
 			'page_meta'          => get_post_meta($page->ID),
 		);
-		
+
 		return $key && isset($pageInfo[$key]) ? $pageInfo[$key] : $pageInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the page.
 	 *

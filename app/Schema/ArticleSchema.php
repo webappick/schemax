@@ -1,14 +1,12 @@
 <?php
 
-namespace WebAppick\WPListInfo\Middleware\Schema;
+namespace Schemax\App\Schema;
 
-
-namespace MyPlugin\Schema;
 
 class ArticleSchema extends AbstractSchema
 {
 	protected $schemaType = 'Article';
-	
+
 	public function getDefaultMappings(): array
 	{
 		return [

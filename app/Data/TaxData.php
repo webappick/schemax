@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class TaxService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class TaxService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific tax.
 	 *
@@ -25,12 +25,12 @@ class TaxService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$tax = $this->getObject($id, 'tax');
 		if (!$tax) {
 			return null;
 		}
-		
+
 		$taxInfo = array(
 			'tax_id'          => $tax->get_id(),
 			'tax_name'        => $tax->get_name(),
@@ -42,10 +42,10 @@ class TaxService extends AbstractInfo implements ServiceInterface {
 			'tax_order'       => $tax->get_order(),
 			'tax_label'       => $tax->get_label(),
 		);
-		
+
 		return $key && isset($taxInfo[$key]) ? $taxInfo[$key] : $taxInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the tax.
 	 *

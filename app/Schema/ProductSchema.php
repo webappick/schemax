@@ -1,11 +1,11 @@
 <?php
 
-namespace MyPlugin\Schema;
+namespace Schemax\App\Schema;
 
 class ProductSchema extends AbstractSchema
 {
 	protected $schemaType = 'Product';
-	
+
 	public function getDefaultMappings(): array
 	{
 		return [

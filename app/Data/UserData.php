@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class UserService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class UserService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about a specific user.
 	 *
@@ -25,12 +25,12 @@ class UserService extends AbstractInfo implements ServiceInterface {
 		if (!$this->validate($id)) {
 			return null;
 		}
-		
+
 		$user = $this->getObject($id, 'user');
 		if (!$user) {
 			return null;
 		}
-		
+
 		$userInfo = array(
 			'user_id'           => $user->ID,
 			'user_login'        => $user->user_login,
@@ -44,10 +44,10 @@ class UserService extends AbstractInfo implements ServiceInterface {
 			'user_nickname'     => get_user_meta($user->ID, 'nickname', true),
 			'user_description'  => get_user_meta($user->ID, 'description', true),
 		);
-		
+
 		return $key && isset($userInfo[$key]) ? $userInfo[$key] : $userInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the user.
 	 *

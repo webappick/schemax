@@ -2,14 +2,15 @@
 
 namespace Schemax\App\Data;
 
-use WC_Product;/**
- * Class AbstractInfo
+use WC_Product;
+/**
+ * Class AbstractData
  *
- * @package WebAppick\WPListInfo\Services
- * @subpackage WebAppick\WPListInfo\Abstracts
+ * @package Schemax;
+ * @subpackage Schemax\App\Data;
  * @author   Ohidul Islam <wahid0003@gmail.com>
  * @link     https://webappick.com
- *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category Library
  */
 abstract class AbstractData {

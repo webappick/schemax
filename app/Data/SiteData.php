@@ -8,12 +8,12 @@ use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 /**
  * Class SiteService
  *
- * @package WebAppick\WPListInfo\Services
+ * @package Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  * @category Library
  */
 class SiteService extends AbstractInfo implements ServiceInterface {
-	
+
 	/**
 	 * Retrieve information about the site.
 	 *
@@ -33,10 +33,10 @@ class SiteService extends AbstractInfo implements ServiceInterface {
 			'site_timezone'    => get_option('timezone_string'),
 			'site_permalink_structure' => get_option('permalink_structure'),
 		);
-		
+
 		return $key && isset($siteInfo[$key]) ? $siteInfo[$key] : $siteInfo;
 	}
-	
+
 	/**
 	 * Retrieve a list of keys for the site.
 	 *
