@@ -1,7 +1,14 @@
 <?php
+/**
+ * MappingManager
+ *
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
+ */
 
 namespace Schemax\App\Mapping;
 
+use RuntimeException;
 
 /**
  * Class MappingManager
@@ -17,7 +24,7 @@ namespace Schemax\App\Mapping;
 
 class MappingManager
 {
-	protected $mappings = [];
+	protected array $mappings = [];
 
 	/**
 	 * Register a mapping class for a specific schema type.
@@ -25,7 +32,7 @@ class MappingManager
 	 * @param string $schemaType
 	 * @param MappingInterface $mappingClass
 	 */
-	public function registerMapping(string $schemaType, MappingInterface $mappingClass)
+	public function registerMapping(string $schemaType, MappingInterface $mappingClass): void
 	{
 		$this->mappings[$schemaType] = $mappingClass;
 	}
@@ -40,7 +47,7 @@ class MappingManager
 	public function getMapping(string $schemaType): array
 	{
 		if (!isset($this->mappings[$schemaType])) {
-			throw new \Exception("No mapping registered for schema type: " . $schemaType);
+			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
 		}
 
 		return $this->mappings[$schemaType]->getMapping($schemaType);
@@ -55,7 +62,7 @@ class MappingManager
 	public function saveMapping(string $schemaType, array $mappingData): void
 	{
 		if (!isset($this->mappings[$schemaType])) {
-			throw new \Exception("No mapping registered for schema type: " . $schemaType);
+			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
 		}
 
 		$this->mappings[$schemaType]->setMapping($schemaType, $mappingData);
@@ -65,11 +72,12 @@ class MappingManager
 	 * Reset the mapping for a specific schema type to the default mapping.
 	 *
 	 * @param string $schemaType
+	 * @throws RuntimeException
 	 */
 	public function resetMappingToDefault(string $schemaType): void
 	{
 		if (!isset($this->mappings[$schemaType])) {
-			throw new \Exception("No mapping registered for schema type: " . $schemaType);
+			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
 		}
 
 		// Reset the mapping to its default state

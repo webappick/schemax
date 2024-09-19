@@ -18,13 +18,16 @@ use Schemax\App\Schema\ProductSchema;
 
 class ProductMapping extends AbstractMapping
 {
-	protected $defaultMappings;
+	protected array $defaultMappings;
 
 	public function __construct()
 	{
 		// Retrieve default mappings from ProductSchema
 		$productSchema = new ProductSchema();
 		$this->defaultMappings = $productSchema->getDefaultMappings();
+
+		// Call the parent constructor with the default mappings
+		parent::__construct($this->defaultMappings);
 	}
 
 	/**

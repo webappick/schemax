@@ -17,7 +17,7 @@ namespace Schemax\App\Mapping;
 
 abstract class AbstractMapping implements MappingInterface
 {
-	protected $defaultMappings;
+	protected array $defaultMappings;
 
 	public function __construct(array $defaultMappings)
 	{
