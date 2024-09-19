@@ -10,62 +10,45 @@
 
 namespace Schemax\App\Data;
 
-use WC_Product;
 
 /**
  * Class DataAbstract
  *
- * @package Schemax;
+ * @package    Schemax;
  * @subpackage Schemax\App\Data;
- * @author   Ohidul Islam <wahid0003@gmail.com>
- * @link     https://webappick.com
- * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category Library
+ * @author     Ohidul Islam <wahid0003@gmail.com>
+ * @link       https://webappick.com
+ * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
+ * @category   Library
  */
 abstract class DataAbstract implements DataInterface { //phpcs:ignore
 
-    public function getParentObject( $object, $objectType ) {//phpcs:ignore
-        if ( 'product' === $objectType && $object->get_parent_id() ) {
-            return wc_get_product( $object->get_parent_id() );
-        }
-
-        return $object;
-    }
-
 	/**
-	 * Check if the ID or Object is valid.
+	 * Get the data for the schema.
 	 *
-	 * @param int|object $idObject The ID or Object for the entity.
-	 */
-	protected function validate( $idObject ): bool {
-		if ( is_numeric( $idObject ) ) {
-			return $idObject > 0;
-		}
-
-		return is_object( $idObject );
-	}
-
-	/**
-	 * Retrieve the object for the entity.
+	 * @param \WC_Product|\WC_Product_Variable $product The ID of the product or post to get the data for.
 	 *
-	 * @param int|object $id The ID or Object for the entity.
-	 * @param string     $objectType The type of object.
-	 * @return object The object for the entity.
+	 * @return array The data for the schema.
 	 */
-	protected function getObject( $id, string $objectType ) {//phpcs:ignore
-		if ( 'product' === $objectType ) {
-			if ( $id instanceof WC_Product ) {
-				return $id;
-			}
+	public function getOffers( \WC_Product $product ): array {
 
-			return wc_get_product( $id );
+		if ( $product->is_type( 'variable' ) ) {
+			$variation = $product->get_available_variations();
+			$min_price = $product->get_variation_price( 'min', true );
+			$max_price = $product->get_variation_price( 'max', true );
+
+			return [
+				'offer_price'         => $min_price,
+				'offer_currency'  => get_woocommerce_currency(),
+				'offer_low_price'      => $min_price,
+				'offer_high_price'     => $max_price,
+			];
 		}
 
-        if ( 'post' === $objectType ) {
-			return get_post( $id );
-		}
+		return [
+			'offer_price'    => $product->get_price(),
+			'offer_currency' => get_woocommerce_currency(),
+		];
 
-		return $id;
 	}
-
 }

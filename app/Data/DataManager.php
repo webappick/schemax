@@ -39,14 +39,15 @@ class DataManager
 	/**
 	 * Get data for the given object type and ID.
 	 *
-	 * @param mixed $idObject The ID of the object to retrieve data for.
+	 * @param object $object The ID of the object to retrieve data for.
+	 *
 	 * @return array The data retrieved for the object.
 	 * @throws \Exception
 	 */
-	public function fetchData($idObject): array
+	public function fetchData( object $object): array
 	{
 		// Get the appropriate data handler from the factory
 		// to Use the handler to retrieve the data
-		return $this->data->fetchData($idObject);
+		return $this->data->fetchData($object);
 	}
 }

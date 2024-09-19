@@ -15,11 +15,11 @@ interface DataInterface {
 	/**
 	 * Fetch data for the given object by ID.
 	 *
-	 * @param int|object $idObject The ID of the object to fetch data for.
+	 * @param object $object The ID of the object to fetch data for.
 	 *
 	 * @return array The data for the object.
 	 */
-	public function fetchData($idObject): array;
+	public function fetchData( object $object): array;
 
 
 	/**

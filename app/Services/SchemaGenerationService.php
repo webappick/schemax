@@ -2,79 +2,122 @@
 
 namespace Schemax\App\Services;
 
+use Schemax\App\Data\DataFactory;
+use Schemax\App\Mapping\MappingFactory;
 use Spatie\SchemaOrg\Schema;
-use Schemax\App\Mapping\MappingManager;
+
 /**
  * Class SchemaGenerationService
- *
- * @package    Schemax
- * @subpackage Schemax\App\Services
- * @author     Ohidul Islam <wahid0003@gmail.com>
- * @link       https://webappick.com
- * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category   Library
  */
-
 class SchemaGenerationService {
 
-	protected $mappingManager;
-
 	/**
-	 * SchemaGenerationService constructor.
+	 * Generate the schema for a given object type.
 	 *
-	 * @param MappingManager $mappingManager The mapping manager instance.
+	 * @param string $objectType The type of object (e.g., 'Product', 'Post').
+	 * @param mixed  $object   The ID of the object to generate the schema for.
+	 *
+	 * @return \Spatie\SchemaOrg\BaseType|null
+	 * @throws \Exception
 	 */
-	public function __construct( MappingManager $mappingManager ) {
-		$this->mappingManager = $mappingManager;
+	public function generateSchema( string $objectType, $object ): ?\Spatie\SchemaOrg\BaseType {
+		// Fetch data using the DataFactory based on the object type.
+		$data = DataFactory::getData( $objectType, $object );
+
+		if ( empty( $data ) ) {
+			throw new \RuntimeException( "No data found for the object type: " . $objectType );
+		}
+
+		// Fetch mappings from the MappingFactory.
+		$mapping = MappingFactory::getMapping( $objectType );
+
+		if ( empty( $mapping ) ) {
+			throw new \RuntimeException( "No mapping found for the object type: " . $objectType );
+		}
+
+		// Initialize the schema dynamically
+		$schema = $this->initializeSchema( $objectType, $data, $mapping );
+
+		// Process reviews or other complex attributes if applicable
+		if ( ! empty( $data['reviews'] ) ) {
+			$this->addReviewsToSchema( $schema, $data['reviews'] );
+		}
+
+		return $schema;
 	}
 
 	/**
-     * Generate the schema for a given product or post using SchemaxInfo
-     *
-     * @param mixed $idObject The ID of the product or post to generate the schema for.
-     * @return \Spatie\SchemaOrg\BaseType
-     */
-	public function generateSchema( $idObject ): \Spatie\SchemaOrg\BaseType {
-		// Fetch the product data from Data Library
-		$productData = array(
-			'product_name'        => 'Product Name',
-			'product_description' => 'Product Description',
-			'product_sku'         => 'Product SKU',
-			'product_reviews'     => array(
-				array(
-					'review_author_name' => 'John Doe',
-					'review_body'        => 'This is a great product!',
-					'review_rating'      => 5,
-					'review_date'        => '2021-01-01',
-				),
-				array(
-					'review_author_name' => 'Jane Doe',
-					'review_body'        => 'This product is terrible!',
-					'review_rating'      => 1,
-					'review_date'        => '2021-01-02',
-				),
-			),
-		);
+	 * Initialize the schema dynamically based on mappings.
+	 *
+	 * @param string $objectType The type of object.
+	 * @param array  $data       The data array for the object.
+	 * @param array  $mapping    The mapping array for the object.
+	 *
+	 * @return \Spatie\SchemaOrg\BaseType
+	 * @throws \Exception
+	 */
+	protected function initializeSchema( string $objectType, array $data, array $mapping ): \Spatie\SchemaOrg\BaseType {
+		// Create a base schema object depending on the object type
+		$schema = $this->getSchemaObject( $objectType );
 
-		// Get the user-defined or default mapping for Product
-		$productMapping = $this->mappingManager->getMapping( 'Product' );
+		// Loop through the mapping to dynamically set schema properties
+		foreach ( $mapping as $property => $mapConfig ) {
+			$dataKey = $mapConfig['mapping'] ?? null;
 
-		// Initialize the product schema using Spatie Schema.org
-		$schema = Schema::product()->name( $productData[$productMapping['name']['mapping']] )->description( $productData[$productMapping['description']['mapping']] )->sku( $productData[$productMapping['sku']['mapping']] );
+			if ( ! empty( $dataKey ) && isset( $data[ $dataKey ] ) ) {
+				// Dynamically call the schema method
+				$method = $property;  // e.g., 'name', 'description', etc.
 
-		// Add reviews if they exist
-		if ( !empty( $productData['product_reviews'] ) ) {
-			foreach ( $productData['product_reviews'] as $reviewData ) {
-				$review = Schema::review()->author( Schema::person()->name( $reviewData['review_author_name'] ) )->reviewBody( $reviewData['review_body'] )->reviewRating(
-                        Schema::rating()->ratingValue( $reviewData['review_rating'] )->bestRating( 5 )
-					)->datePublished( $reviewData['review_date'] );
-
-				// Attach the review to the product schema
-				$schema->review( $review );
+				if ( method_exists( $schema, $method ) ) {
+					// Dynamically call the method with the data value
+					$schema->$method( $data[ $dataKey ] );
+				}
 			}
 		}
 
 		return $schema;
 	}
 
+	/**
+	 * Get the schema object based on an object type.
+	 *
+	 * @param string $objectType
+	 *
+	 * @return \Spatie\SchemaOrg\BaseType
+	 * @throws \Exception
+	 */
+	protected function getSchemaObject( string $objectType ): \Spatie\SchemaOrg\BaseType {
+		switch ( $objectType ) {
+			case 'Product':
+				return Schema::product();
+			case 'Article':
+				return Schema::article();
+			// Add other cases for different object types if needed
+			default:
+				throw new \RuntimeException( "Unsupported object type: " . $objectType );
+		}
+	}
+
+	/**
+	 * Add reviews to the schema if they exist.
+	 *
+	 * @param \Spatie\SchemaOrg\BaseType $schema  The schema object.
+	 * @param array                      $reviews Array of reviews to add to the schema.
+	 */
+	protected function addReviewsToSchema( $schema, array $reviews ): void {
+		foreach ( $reviews as $reviewData ) {
+			$review = Schema::review()
+			                ->author( Schema::person()->name( $reviewData['review_author_name'] ?? '' ) )
+			                ->reviewBody( $reviewData['review_body'] ?? '' )
+			                ->reviewRating( Schema::rating()
+			                                      ->ratingValue( $reviewData['review_rating'] ?? null )
+			                                      ->bestRating( 5 )
+			                )
+			                ->datePublished( $reviewData['review_date'] ?? null );
+
+			// Attach the review to the schema
+			$schema->review( $review );
+		}
+	}
 }
+

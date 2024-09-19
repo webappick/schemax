@@ -10,13 +10,13 @@ class DataFactory
 	 *
 	 * @throws \Exception
 	 */
-	public function getData(string $objectType, $idObject ): array {
+	public static function getData(string $objectType, $object ): array {
 		switch ($objectType) {
 			case 'Product':
-				return (new DataManager( new ProductData() ))->fetchData( $idObject );
+				return (new DataManager( new ProductData() ))->fetchData( $object );
 
-			case 'Post':
-				return (new DataManager( new PostData() ))->fetchData( $idObject );
+			case 'Article':
+				return (new DataManager( new PostData() ))->fetchData( $object );
 
 			// Add other object types as needed (e.g., Review, Category)
 			default:

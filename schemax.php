@@ -90,49 +90,6 @@ if ( ! $requirements->satisfied() ) {
 }
 
 
-/**
- * Create a helper function for easy SDK access.
- *
- * @global type $s_fs
- * @return object
- */
-function s_fs() {
-	global $s_fs;
-
-	if ( !isset( $s_fs ) ) {
-		require_once SMAX_PLUGIN_ROOT . 'vendor/freemius/wordpress-sdk/start.php';
-		$s_fs = fs_dynamic_init(
-			array(
-				'id'             => '',
-				'slug'           => 'schemax',
-				'public_key'     => '',
-				'is_live'        => false,
-				'is_premium'     => true,
-				'has_addons'     => false,
-				'has_paid_plans' => true,
-				'menu'           => array(
-					'slug' => 'schemax',
-				),
-			)
-		);
-
-		if ( $s_fs->is_premium() ) {
-			$s_fs->add_filter(
-				'support_forum_url',
-				static function ( $wp_org_support_forum_url ) { //phpcs:ignore
-					return 'https://your-url.test';
-				}
-			);
-		}
-	}
-
-	return $s_fs;
-}
-
-// s_fs();
-
-// Documentation to integrate GitHub, GitLab or BitBucket https://github.com/YahnisElsts/plugin-update-checker/blob/master/README.md
-Puc_v4_Factory::buildUpdateChecker( 'https://github.com/user-name/repo-name/', __FILE__, 'unique-plugin-or-theme-slug' );
 
 if ( ! wp_installing() ) {
 	register_activation_hook( SMAX_TEXTDOMAIN . '/' . SMAX_TEXTDOMAIN . '.php', array( new \Schemax\Backend\ActDeact, 'activate' ) );

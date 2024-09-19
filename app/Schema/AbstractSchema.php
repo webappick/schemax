@@ -1,8 +1,6 @@
 <?php
 
 namespace Schemax\App\Schema;
-
-namespace Schemax\App\Schema;
 /**
  * Class AbstractSchema
  *

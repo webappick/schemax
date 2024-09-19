@@ -27,91 +27,88 @@ class ProductData extends DataAbstract {
 	/**
 	 * Get the data for the given object type.
 	 *
-	 * @param int|object $idObject The ID or Object for the entity.
+	 * @param object $object The ID or Object for the entity.
 	 *
 	 * @return array The data for the object.
 	 */
-	public function fetchData( $idObject ): array {
+	public function fetchData( object $object ): array {
 		// Validate the id or object first.
-		if ( ! $this->validate( $idObject ) ) {
+		if (! $object instanceof \WC_Product) {
 			return [];
 		}
 
-		$product = $this->getObject( $idObject, 'product' );
-
-		if ( ! $product ) {
-			return [];
-		}
+		$product = $object;
 
 		// If the product type is variation, get the parent product
-		$parent = $this->getParentObject( $product, 'product' );
+		$parent = $product;
+		if ($product->is_type('variation')) {
+			$parent = wc_get_product($product->get_parent_id());
+		}
 
 		$productInfo = array(
 			'product_id'                 => $product->get_id(),
-			'product_parent_id'          => $product->get_parent_id(),
 			'product_name'               => $product->get_name(),
 			'product_sku'                => $product->get_sku(),
-			'product_parent_sku'         => $product->is_type( 'variation' ) ? $parent->get_sku() : null,
-			'product_url'                => $product->get_permalink(),
-			'product_parent_url'         => $product->is_type( 'variation' ) ? $parent->get_permalink() : null,
-			'product_price'              => $product->get_price(),
-			'product_sale_price'         => $product->get_sale_price(),
-			'product_regular_price'      => $product->get_regular_price(),
-			'product_stock_quantity'     => $product->get_stock_quantity(),
-			'product_stock_status'       => $product->get_stock_status(),
-			'product_weight'             => $product->get_weight(),
-			'product_length'             => $product->get_length(),
-			'product_width'              => $product->get_width(),
-			'product_height'             => $product->get_height(),
-			'product_dimensions'         => $product->get_dimensions(),
-			'product_categories'         => $product->get_category_ids(),
-			'product_tags'               => $product->get_tag_ids(),
-			'product_attributes'         => $product->get_attributes(),
-			'product_variations'         => $product->get_children(),
-			'product_upsell_ids'         => $product->get_upsell_ids(),
-			'product_cross_sell_ids'     => $product->get_cross_sell_ids(),
-			'product_type'               => $product->get_type(),
-			'product_status'             => $product->get_status(),
-			'product_date_created'       => $product->get_date_created(),
-			'product_date_modified'      => $product->get_date_modified(),
-			'product_date_on_sale_from'  => $product->get_date_on_sale_from(),
-			'product_date_on_sale_to'    => $product->get_date_on_sale_to(),
-			'product_purchasable'        => $product->is_purchasable(),
-			'product_virtual'            => $product->is_virtual(),
-			'product_downloadable'       => $product->is_downloadable(),
-			'product_featured'           => $product->is_featured(),
-			'product_visible'            => $product->is_visible(),
-			'product_on_sale'            => $product->is_on_sale(),
-			'product_taxable'            => $product->is_taxable(),
-			'product_shipping_required'  => $product->needs_shipping(),
-			'product_shipping_taxable'   => $product->is_shipping_taxable(),
-			'product_reviews_allowed'    => $product->get_reviews_allowed(),
-			'product_rating_counts'      => $product->get_rating_counts(),
-			'product_average_rating'     => $product->get_average_rating(),
-			'product_review_count'       => $product->get_review_count(),
-			'product_gallery_image_ids'  => $product->get_gallery_image_ids(),
-			'product_image_id'           => $product->get_image_id(),
-			'product_image'              => $product->get_image(),
-			'product_catalog_visibility' => $product->get_catalog_visibility(),
-			'product_description'        => $product->get_description(),
-			'product_short_description'  => $product->get_short_description(),
-			'product_meta'               => $product->get_meta_data(),
-			'product_permalink'          => $product->get_permalink(),
-			'product_add_to_cart_url'    => $product->add_to_cart_url(),
-			'product_add_to_cart_text'   => $product->add_to_cart_text(),
-			'product_tax_class'          => $product->get_tax_class(),
-			'product_manage_stock'       => $product->managing_stock(),
-			'product_downloads'          => $product->get_downloads(),
-			'product_download_limit'     => $product->get_download_limit(),
-			'product_total_sales'        => $product->get_total_sales(),
-			'product_backorders'         => $product->get_backorders(),
-			'product_is_on_sale'         => $product->is_on_sale(),
-			'product_purchase_note'      => $product->get_purchase_note(),
-			'product_sold_individually'  => $product->is_sold_individually(),
-			'product_is_virtual'         => $product->is_virtual(),
-			'product_is_downloadable'    => $product->is_downloadable(),
-			'product_is_featured'        => $product->is_featured(),
-			'product_is_visible'         => $product->is_visible(),
+			'product_offers'             => $this->getOffers($product), // Get the offer data
+//			'product_parent_id'          => $product->get_parent_id(),
+//			'product_parent_sku'         => $product->is_type( 'variation' ) ? $parent->get_sku() : null,
+//			'product_url'                => $product->get_permalink(),
+//			'product_parent_url'         => $product->is_type( 'variation' ) ? $parent->get_permalink() : null,
+//			'product_stock_quantity'     => $product->get_stock_quantity(),
+//			'product_stock_status'       => $product->get_stock_status(),
+//			'product_weight'             => $product->get_weight(),
+//			'product_length'             => $product->get_length(),
+//			'product_width'              => $product->get_width(),
+//			'product_height'             => $product->get_height(),
+//			'product_dimensions'         => $product->get_dimensions(),
+//			'product_categories'         => $product->get_category_ids(),
+//			'product_tags'               => $product->get_tag_ids(),
+//			'product_attributes'         => $product->get_attributes(),
+//			'product_variations'         => $product->get_children(),
+//			'product_upsell_ids'         => $product->get_upsell_ids(),
+//			'product_cross_sell_ids'     => $product->get_cross_sell_ids(),
+//			'product_type'               => $product->get_type(),
+//			'product_status'             => $product->get_status(),
+//			'product_date_created'       => $product->get_date_created(),
+//			'product_date_modified'      => $product->get_date_modified(),
+//			'product_date_on_sale_from'  => $product->get_date_on_sale_from(),
+//			'product_date_on_sale_to'    => $product->get_date_on_sale_to(),
+//			'product_purchasable'        => $product->is_purchasable(),
+//			'product_virtual'            => $product->is_virtual(),
+//			'product_downloadable'       => $product->is_downloadable(),
+//			'product_featured'           => $product->is_featured(),
+//			'product_visible'            => $product->is_visible(),
+//			'product_on_sale'            => $product->is_on_sale(),
+//			'product_taxable'            => $product->is_taxable(),
+//			'product_shipping_required'  => $product->needs_shipping(),
+//			'product_shipping_taxable'   => $product->is_shipping_taxable(),
+//			'product_reviews_allowed'    => $product->get_reviews_allowed(),
+//			'product_rating_counts'      => $product->get_rating_counts(),
+//			'product_average_rating'     => $product->get_average_rating(),
+//			'product_review_count'       => $product->get_review_count(),
+//			'product_gallery_image_ids'  => $product->get_gallery_image_ids(),
+//			'product_image_id'           => $product->get_image_id(),
+//			'product_image'              => $product->get_image(),
+//			'product_catalog_visibility' => $product->get_catalog_visibility(),
+//			'product_description'        => $product->get_description(),
+//			'product_short_description'  => $product->get_short_description(),
+//			'product_meta'               => $product->get_meta_data(),
+//			'product_permalink'          => $product->get_permalink(),
+//			'product_add_to_cart_url'    => $product->add_to_cart_url(),
+//			'product_add_to_cart_text'   => $product->add_to_cart_text(),
+//			'product_tax_class'          => $product->get_tax_class(),
+//			'product_manage_stock'       => $product->managing_stock(),
+//			'product_downloads'          => $product->get_downloads(),
+//			'product_download_limit'     => $product->get_download_limit(),
+//			'product_total_sales'        => $product->get_total_sales(),
+//			'product_backorders'         => $product->get_backorders(),
+//			'product_is_on_sale'         => $product->is_on_sale(),
+//			'product_purchase_note'      => $product->get_purchase_note(),
+//			'product_sold_individually'  => $product->is_sold_individually(),
+//			'product_is_virtual'         => $product->is_virtual(),
+//			'product_is_downloadable'    => $product->is_downloadable(),
+//			'product_is_featured'        => $product->is_featured(),
+//			'product_is_visible'         => $product->is_visible(),
 		);
 
 		return apply_filters( 'schemax_product_data', $productInfo, $product );
