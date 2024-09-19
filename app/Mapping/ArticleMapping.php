@@ -1,7 +1,16 @@
 <?php
+/**
+ * ArticleMapping
+ *
+ * This class is responsible for managing the mapping of the article schema.
+ *
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
+ */
 
 namespace Schemax\App\Mapping;
 
+use Schemax\App\Schema\ArticleSchema;
 
 /**
  * Class ArticleMapping
@@ -13,42 +22,45 @@ namespace Schemax\App\Mapping;
  * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category   Library
  */
-class ArticleMapping {
+class ArticleMapping extends MappingAbstract {
 
-	protected $defaultMappings;
+	/**
+	 * @var array $default_mappings Default mappings for the schema.
+	 */
+	protected $default_mappings;
 
-	public function __construct()
-	{
+	public function __construct() {
 		// Retrieve default mappings from ArticleSchema
-		$articleSchema = new ArticleSchema();
-		$this->defaultMappings = $articleSchema->getDefaultMappings();
+		$articleSchema          = new ArticleSchema;
+		$this->default_mappings = $articleSchema->getDefaultMappings();
+
+		// Call the parent constructor with the default mappings
+		parent::__construct( $this->default_mappings );
 	}
 
 	/**
 	 * Get the current mapping for the article schema.
 	 * If no custom mappings exist, fall back to the default.
 	 *
-	 * @param string $schemaType
-	 * @return array
+	 * @param string $schema_type The schema type to get the mapping for.
+	 * @return array The current mapping for the article schema.
 	 */
-	public function getMapping(string $schemaType): array
-	{
+	public function getMapping( string $schema_type ): array { //phpcs:ignore
 		// Get the user-defined mapping from the database
-		$customMapping = get_option('article_schema_mapping', []);
+		$customMapping = get_option( 'schemax_article_mappings', array() );
 
 		// Merge user mapping with default mapping (user mappings override defaults)
-		return array_merge($this->defaultMappings, $customMapping);
+		return array_merge( $this->default_mappings, $customMapping );
 	}
 
 	/**
 	 * Save the custom mapping provided by the user.
 	 *
-	 * @param array $userMapping
+	 * @param array $userMapping The user-defined mapping to save.
 	 */
-	public function saveMapping(array $userMapping): void
-	{
+	public function saveMapping( array $userMapping ): bool {
 		// Save the user-defined mapping to the database
-		update_option('article_schema_mapping', $userMapping);
+		return update_option( 'schemax_article_mappings', $userMapping );
 	}
 
 }

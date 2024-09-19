@@ -1,7 +1,14 @@
 <?php
+/**
+ * MappingInterface
+ *
+ * This class is responsible for managing the mapping of the schema.
+ *
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
+ */
 
 namespace Schemax\App\Mapping;
-
 
 /**
  * Class MappingInterface
@@ -9,8 +16,10 @@ namespace Schemax\App\Mapping;
  * @package    Schemax\App\Mapping
  * @subpackage Schemax\App\Mapping
  */
-interface MappingInterface
-{
-	public function getMapping(string $schemaType): array;
-	public function setMapping(string $schemaType, array $mappingData): void;
+interface MappingInterface { //phpcs:ignore
+
+	public function getMapping( string $schema_type ): array;// phpcs:ignore
+
+	public function setMapping( string $schema_type, array $mappingData ): bool;// phpcs:ignore
+
 }

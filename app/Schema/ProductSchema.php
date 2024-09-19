@@ -22,4 +22,32 @@ class ProductSchema extends AbstractSchema
 			],
 		];
 	}
+
+	/**
+	 * Get schema property configurations (optional).
+	 * This can include labels, descriptions, required properties, etc.
+	 *
+	 * @return array The configuration data for the Product schema properties.
+	 */
+	public static function getPropertyConfigurations(): array
+	{
+		return [
+			'name' => [
+				'label' => 'Product Name',
+				'description' => 'The name of the product.',
+				'required' => true
+			],
+			'description' => [
+				'label' => 'Product Description',
+				'description' => 'A detailed description of the product.',
+				'required' => true
+			],
+			'sku' => [
+				'label' => 'Product SKU',
+				'description' => 'The unique identifier for the product.',
+				'required' => false
+			],
+			// Add more configurations as needed
+		];
+	}
 }

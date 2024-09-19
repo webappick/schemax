@@ -1,36 +1,52 @@
 <?php
-
-namespace WebAppick\WPListInfo\Strategies;
-
-
-use WebAppick\WPListInfo\Interfaces\ServiceInterface;
-
 /**
- * Class ServiceStrategy
+ * Class DataManager
  *
- * @package Schemax
- * @subpackage WebAppick\WPListInfo\Strategies
- * @author   Ohidul Islam <wahid0003@gmail.com>
- * @link     https://webappick.com
- *@license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category Library
+ * @package    Schemax
+ * @subpackage Schemax\App\Data
  */
-class ServiceStrategy {
-	private $info;
 
-	public function __construct(ServiceInterface $info) {
-		$this->info = $info;
+namespace Schemax\App\Data;
+
+use Schemax\App\Data\DataInterface;
+/**
+ * Class DataManager
+ *
+ * @package    Schemax
+ * @subpackage Schemax\App\Data
+ * @author     Ohidul Islam <wahid0003@gmail.com>
+ * @link       https://webappick.com
+ * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
+ * @category   Library
+ */
+class DataManager
+{
+	/**
+	 * @var DataInterface $data The data handler to use.
+	 */
+	protected $data;
+
+	/**
+	 * DataManager constructor.
+	 *
+	 * @param \Schemax\App\Data\DataInterface $data The data handler to use.
+	 */
+	public function __construct(DataInterface $data)
+	{
+		$this->data = $data;
 	}
 
-	public function getList($args = array()) {
-		return $this->info->getList($args);
-	}
-
-	public function getInfo($key, $idObject) {
-		return $this->info->getInfo($key, $idObject);
-	}
-
-	public function getKeys() {
-		return $this->info->getKeys();
+	/**
+	 * Get data for the given object type and ID.
+	 *
+	 * @param mixed $idObject The ID of the object to retrieve data for.
+	 * @return array The data retrieved for the object.
+	 * @throws \Exception
+	 */
+	public function fetchData($idObject): array
+	{
+		// Get the appropriate data handler from the factory
+		// to Use the handler to retrieve the data
+		return $this->data->fetchData($idObject);
 	}
 }

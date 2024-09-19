@@ -4,85 +4,43 @@
  *
  * This file contains the ProductService class.
  *
- * @package Schemax;
+ * @package    Schemax;
  * @subpackage WebAppick\WPListInfo\Services
  */
 
 namespace Schemax\App\Data;
 
-use WC_Product_Query;
-use WebAppick\WPListInfo\Abstracts\AbstractInfo;
-use WebAppick\WPListInfo\Interfaces\ServiceInterface;
 
 /**
  * Class ProductService
  *
- * @package Schemax;
+ * @package    Schemax;
  * @subpackage WebAppick\WPListInfo\Services
- * @author   Ohidul Islam <wahid0003@gmail.com>
- * @link     https://webappick.com
- * @license  https://opensource.org/licenses/gpl-license.php GNU Public License
- * @category Library
+ * @author     Ohidul Islam <wahid0003@gmail.com>
+ * @link       https://webappick.com
+ * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
+ * @category   Library
  */
-class ProductData extends AbstractData implements DataInterface {
+class ProductData extends DataAbstract {
+
 
 	/**
-	 * Get a list of WooCommerce products based on provided arguments.
+	 * Get the data for the given object type.
 	 *
-	 * @param array $args Optional arguments for querying products.
-	 *                    Example: [
-	 *                        'limit' => 20,
-	 *                        'orderby'=> 'date',
-	 *                        'order' => 'DESC',
-	 *                        'status'=> 'publish'
-	 *                    ].
-	 * @return array List of products, formatted if necessary.
-	 */
-	public function getList( $args = array() ) {
-		// Define default arguments
-		$defaults = array(
-			'limit'   => 20,            // Fetch all products by default
-			'orderby' => 'date',        // Order by date by default
-			'order'   => 'DESC',        // Order in descending order by default
-			'status'  => 'publish',     // Only fetch published products by default
-		);
-
-		// Merge provided arguments with the defaults
-		$queryArgs = wp_parse_args( $args, $defaults );
-
-		// Use WC_Product_Query with the merged arguments
-		$query = new WC_Product_Query( $queryArgs );
-
-		// Get the list of products
-		$products = $query->get_products();
-
-		// Check if products are found and return formatted output if needed
-		if ( ! empty( $products ) ) {
-			return $products;
-		}
-
-		// Return an empty array if no products are found
-		return array();
-	}
-
-	/**
-	 * Retrieve information about a specific product.
+	 * @param int|object $idObject The ID or Object for the entity.
 	 *
-	 * @param string|null $key The key for the product.
-	 * @param int|object  $idObject The ID or Object for the product.
-	 * @return array|bool|float|int|string|\WC_DateTime|null An array of all or single information about the product.
+	 * @return array The data for the object.
 	 */
-	public function getInfo( $key, $idObject ) { // phpcs:ignore
-
+	public function fetchData( $idObject ): array {
 		// Validate the id or object first.
-		if ( !$this->validate( $idObject ) ) {
-			return null;
+		if ( ! $this->validate( $idObject ) ) {
+			return [];
 		}
 
-        $product = $this->getObject( $idObject, 'product' );
+		$product = $this->getObject( $idObject, 'product' );
 
 		if ( ! $product ) {
-			return null;
+			return [];
 		}
 
 		// If the product type is variation, get the parent product
@@ -156,21 +114,16 @@ class ProductData extends AbstractData implements DataInterface {
 			'product_is_visible'         => $product->is_visible(),
 		);
 
-		if ( ! empty( $key ) && isset( $productInfo[ $key ] ) ) {
-			return $productInfo[$key];
-		}
-
-		return $productInfo;
+		return apply_filters( 'schemax_product_data', $productInfo, $product );
 	}
 
 	/**
-	 * Retrieve a list of keys for the product.
+	 * Get the keys for the product data.
 	 *
-	 * @return array An array of keys for the product.
-	 * @throws \Exception If the translation is not found.
+	 * @return array The keys for the product data.
 	 */
-	public function getKeys() { // phpcs:ignore
-		return array( // List of keys for the product and their names for dropdowns, etc.
+	public function dataKeys(): array {
+		$productDataKeys = array( // List of keys for the product and their names for dropdowns, etc.
 			'product_id'                 => __( 'Product ID', 'wp-list-info' ),
 			'product_parent_id'          => __( 'Parent Product ID', 'wp-list-info' ),
 			'product_name'               => __( 'Product Name', 'wp-list-info' ),
@@ -237,6 +190,7 @@ class ProductData extends AbstractData implements DataInterface {
 			'product_is_featured'        => __( 'Product Is Featured', 'wp-list-info' ),
 			'product_is_visible'         => __( 'Product Is Visible', 'wp-list-info' ),
 		);
-	}
 
+		return apply_filters( 'schemax_product_data_key', $productDataKeys );
+	}
 }

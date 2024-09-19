@@ -1,7 +1,14 @@
 <?php
+/**
+ * ProductMapping
+ *
+ * This class is responsible for managing the mapping of the product schema.
+ *
+ * @package    Schemax
+ * @subpackage Schemax\App\Mapping
+ */
 
 namespace Schemax\App\Mapping;
-
 
 use Schemax\App\Schema\ProductSchema;
 
@@ -15,45 +22,45 @@ use Schemax\App\Schema\ProductSchema;
  * @license    https://opensource.org/licenses/gpl-license.php GNU Public License
  * @category   Library
  */
+class ProductMapping extends MappingAbstract {
 
-class ProductMapping extends AbstractMapping
-{
-	protected array $defaultMappings;
+	/**
+	 * @var array $default_mappings Default mappings for the schema.
+	 */
+	protected $default_mappings;
 
-	public function __construct()
-	{
+	public function __construct() {
 		// Retrieve default mappings from ProductSchema
-		$productSchema = new ProductSchema();
-		$this->defaultMappings = $productSchema->getDefaultMappings();
+		$productSchema          = new ProductSchema;
+		$this->default_mappings = $productSchema->getDefaultMappings();
 
 		// Call the parent constructor with the default mappings
-		parent::__construct($this->defaultMappings);
+		parent::__construct( $this->default_mappings );
 	}
 
 	/**
 	 * Get the current mapping for the product schema.
 	 * If no custom mappings exist, fall back to the default.
 	 *
-	 * @param string $schemaType
-	 * @return array
+	 * @param string $schema_type The schema type to get the mapping for.
+     * @return array The current mapping for the product schema.
 	 */
-	public function getMapping(string $schemaType): array
-	{
+	public function getMapping( string $schema_type ): array { //phpcs:ignore
 		// Get the user-defined mapping from the database
-		$customMapping = get_option('product_schema_mapping', []);
+		$customMapping = get_option( 'product_schema_mapping', array() );
 
 		// Merge user mapping with default mapping (user mappings override defaults)
-		return array_merge($this->defaultMappings, $customMapping);
+		return array_merge( $this->default_mappings, $customMapping );
 	}
 
 	/**
 	 * Save the custom mapping provided by the user.
 	 *
-	 * @param array $userMapping
+	 * @param array $userMapping The user-defined mapping to save.
 	 */
-	public function saveMapping(array $userMapping): void
-	{
+	public function saveMapping( array $userMapping ): bool {
 		// Save the user-defined mapping to the database
-		update_option('product_schema_mapping', $userMapping);
+		return update_option( 'product_schema_mapping', $userMapping );
 	}
+
 }

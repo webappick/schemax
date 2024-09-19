@@ -18,6 +18,14 @@
         <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
     </rule>
 
+	<rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassName">
+		<exclude-pattern>*/Abstract*.php</exclude-pattern>
+	</rule>
+
+	<rule ref="PSR4">
+		<!-- Exclude the rule for snake_case method names -->
+		<exclude name="Squiz.NamingConventions.ValidFunctionName" />
+	</rule>
 
     <!-- Optionally adjust severity and report -->
     <arg name="severity" value="5"/>

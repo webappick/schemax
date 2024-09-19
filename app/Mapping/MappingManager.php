@@ -8,8 +8,6 @@
 
 namespace Schemax\App\Mapping;
 
-use RuntimeException;
-
 /**
  * Class MappingManager
  *
@@ -22,66 +20,59 @@ use RuntimeException;
  */
 
 
-class MappingManager
-{
-	protected array $mappings = [];
+class MappingManager {
+
+	/**
+	 * @var array $mappings The registered mappings.
+	 */
+	protected $mappings = array();
 
 	/**
 	 * Register a mapping class for a specific schema type.
 	 *
-	 * @param string $schemaType
-	 * @param MappingInterface $mappingClass
+	 * @param string                                $schema_type The schema type to register the mapping for.
+	 * @param \Schemax\App\Mapping\MappingInterface $mappingClass The mapping class to register.
 	 */
-	public function registerMapping(string $schemaType, MappingInterface $mappingClass): void
-	{
-		$this->mappings[$schemaType] = $mappingClass;
+	public function registerMapping( string $schema_type, MappingInterface $mappingClass ): void {
+		$this->mappings[$schema_type] = $mappingClass;
 	}
 
 	/**
 	 * Retrieve the mapping for a specific schema type.
 	 * Falls back to the default mapping if no custom mapping is set.
-	 *
-	 * @param string $schemaType
-	 * @return array
 	 */
-	public function getMapping(string $schemaType): array
-	{
-		if (!isset($this->mappings[$schemaType])) {
-			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
+	public function getMapping( string $schema_type ): array {
+		if ( !isset( $this->mappings[$schema_type] ) ) {
+			throw new \RuntimeException( 'No mapping registered for schema type: ' . $schema_type );
 		}
 
-		return $this->mappings[$schemaType]->getMapping($schemaType);
+		return $this->mappings[$schema_type]->getMapping( $schema_type );
 	}
 
 	/**
 	 * Save a new mapping for a specific schema type.
-	 *
-	 * @param string $schemaType
-	 * @param array $mappingData
 	 */
-	public function saveMapping(string $schemaType, array $mappingData): void
-	{
-		if (!isset($this->mappings[$schemaType])) {
-			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
+	public function saveMapping( string $schema_type, array $mappingData ): void {
+		if ( !isset( $this->mappings[$schema_type] ) ) {
+			throw new \RuntimeException( 'No mapping registered for schema type: ' . $schema_type );
 		}
 
-		$this->mappings[$schemaType]->setMapping($schemaType, $mappingData);
+		$this->mappings[$schema_type]->setMapping( $schema_type, $mappingData );
 	}
 
 	/**
-	 * Reset the mapping for a specific schema type to the default mapping.
-	 *
-	 * @param string $schemaType
-	 * @throws RuntimeException
-	 */
-	public function resetMappingToDefault(string $schemaType): void
-	{
-		if (!isset($this->mappings[$schemaType])) {
-			throw new RuntimeException("No mapping registered for schema type: " . $schemaType);
+     * Reset the mapping for a specific schema type to the default mapping.
+     *
+     * @throws \RuntimeException
+     */
+	public function resetMappingToDefault( string $schema_type ): void {
+		if ( !isset( $this->mappings[$schema_type] ) ) {
+			throw new \RuntimeException( 'No mapping registered for schema type: ' . $schema_type );
 		}
 
 		// Reset the mapping to its default state
-		$defaultMapping = $this->mappings[$schemaType]->getDefaultMappings();
-		$this->mappings[$schemaType]->setMapping($schemaType, $defaultMapping);
+		$defaultMapping = $this->mappings[$schema_type]->getDefaultMappings();
+		$this->mappings[$schema_type]->setMapping( $schema_type, $defaultMapping );
 	}
+
 }
