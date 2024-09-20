@@ -8,6 +8,8 @@
 
 namespace Schemax\App\Mapping;
 
+use Patchwork\Exceptions\NonNullToVoid;
+
 /**
  * Class MappingFactory
  *
@@ -19,33 +21,70 @@ namespace Schemax\App\Mapping;
  * @category   Library
  */
 class MappingFactory {
+
+	private string $objectType;
+
+	private $mappingManager;
+
 	/**
-	 * Get the mapping for the given object type.
+	 * MappingFactory constructor.
 	 *
 	 * @param string $objectType The type of object (e.g., 'Product', 'Post').
-	 *
-	 * @return array The mapping for the object.
-	 * @throws \Patchwork\Exceptions\NonNullToVoid
 	 */
-	public static function getMapping( string $objectType ): array {
-		switch ( $objectType ) {
+	public function __construct(string $objectType)
+	{
+		$this->objectType = $objectType;
+		$this->mappingManager = $this->registerMapping();
+	}
+
+	private function registerMapping()
+	{
+		switch ( $this->objectType ) {
 			case 'Product':
 				$productMapping = new ProductMapping();
 				$mappingManager = new MappingManager();
-				$mappingManager->registerMapping( 'Product', $productMapping );
+				$mappingManager->registerMapping( $this->objectType, $productMapping );
 
-				return $mappingManager->getMapping( 'Product' );
+				return $mappingManager;
 
 			case 'Article':
 				$articleMapping = new ArticleMapping();
 				$mappingManager = new MappingManager();
 				$mappingManager->registerMapping( 'Article', $articleMapping );
 
-				return $mappingManager->getMapping( 'Article' );
+				return $mappingManager;
 
 			default:
 				return [];
 		}
+	}
+
+	/**
+	 * Get the mapping for the given object type.
+	 *
+	 * @return array The mapping for the object.
+	 * @throws \Exception
+	 */
+	public function getMapping(): array {
+		return $this->mappingManager->getMapping( $this->objectType );
+	}
+
+	/**
+	 * Save the custom mapping provided by the user.
+	 *
+	 * @param array $userMapping The user-defined mapping to save.
+	 * @throws NonNullToVoid
+	 */
+	public function saveMapping( array $userMapping ): void {
+		$this->mappingManager->saveMapping( $this->objectType, $userMapping );
+	}
+
+	/**
+	 * Reset the mapping for the given object type to the default mapping.
+	 * @throws NonNullToVoid
+	 */
+	public function resetMappingToDefault(): void {
+		$this->mappingManager->resetMappingToDefault( $this->objectType );
 	}
 
 }

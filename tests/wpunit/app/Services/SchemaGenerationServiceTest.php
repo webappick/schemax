@@ -61,7 +61,8 @@ class SchemaGenerationServiceTest extends WPTestCase
 		codecept_debug( $schema->toArray() );
 
 		$data = DataFactory::getData('Product', $product);
-		$mapping = MappingFactory::getMapping('Product');
+		$mapping = new MappingFactory('Product');
+		$productMapping = $mapping->getMapping();
 		$service = new SchemaGenerationService();
 		$schema = $service->generateSchema('Product', $product);
 

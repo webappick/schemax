@@ -57,7 +57,7 @@ class MappingManager {
 			throw new \RuntimeException( 'No mapping registered for schema type: ' . $schema_type );
 		}
 
-		$this->mappings[$schema_type]->setMapping( $schema_type, $mappingData );
+		$this->mappings[$schema_type]->saveMapping( $schema_type, $mappingData );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class MappingManager {
 
 		// Reset the mapping to its default state
 		$defaultMapping = $this->mappings[$schema_type]->getDefaultMappings();
-		$this->mappings[$schema_type]->setMapping( $schema_type, $defaultMapping );
+		$this->mappings[$schema_type]->saveMapping( $schema_type, $defaultMapping );
 	}
 
 }
