@@ -11,6 +11,12 @@ use Spatie\SchemaOrg\Schema;
  */
 class SchemaGenerationService {
 
+	private $mappingFactory;
+
+	public function __construct() {
+		$this->mappingFactory = new MappingFactory();
+	}
+
 	/**
 	 * Generate the schema for a given object type.
 	 *
@@ -29,7 +35,7 @@ class SchemaGenerationService {
 		}
 
 		// Fetch mappings from the MappingFactory.
-		$mapping = MappingFactory::getMapping( $objectType );
+		$mapping = $this->mappingFactory->getMapping( $objectType );
 
 		if ( empty( $mapping ) ) {
 			throw new \RuntimeException( "No mapping found for the object type: " . $objectType );

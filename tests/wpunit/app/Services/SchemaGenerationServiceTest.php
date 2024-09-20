@@ -54,16 +54,16 @@ class SchemaGenerationServiceTest extends WPTestCase
 
 //		// Initialize the MappingManager
         $data = DataFactory::getData('Article', $post);
-		$mapping = new MappingFactory('Article');
-		$articleMapping = $mapping->getMapping();
+		$mapping = new MappingFactory();
+		$articleMapping = $mapping->getMapping('article');
 		$service = new SchemaGenerationService();
 		$schema = $service->generateSchema('Article', $post);
 
 		codecept_debug( $schema->toArray() );
 
 		$data = DataFactory::getData('Product', $product);
-		$mapping = new MappingFactory('Product');
-		$productMapping = $mapping->getMapping();
+		$mapping = new MappingFactory();
+		$productMapping = $mapping->getMapping('product');
 		$service = new SchemaGenerationService();
 		$schema = $service->generateSchema('Product', $product);
 

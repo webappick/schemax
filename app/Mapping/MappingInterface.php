@@ -18,8 +18,8 @@ namespace Schemax\App\Mapping;
  */
 interface MappingInterface { //phpcs:ignore
 
-	public function getMapping( string $schema_type ): array;// phpcs:ignore
+	public function getMapping( string $schema_type, $id=null): array;// phpcs:ignore
 
-	public function setMapping( string $schema_type, array $mappingData ): bool;// phpcs:ignore
+	public function setMapping( string $schema_type, array $mappingData, $id=null): bool;// phpcs:ignore
 
 }

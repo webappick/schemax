@@ -42,10 +42,19 @@ class ProductMapping extends MappingAbstract {
 	 * Get the current mapping for the product schema.
 	 * If no custom mappings exist, fall back to the default.
 	 *
-	 * @param string $schema_type The schema type to get the mapping for.
-     * @return array The current mapping for the product schema.
+	 * @param string $schema_type The schema type to get the mapping for. (e.g., 'Product')
+	 * @param int    $id          The ID of the product to get the mapping for.
+	 * @return array The current mapping for the product schema.
 	 */
-	public function getMapping( string $schema_type ): array { //phpcs:ignore
+	public function getMapping( string $schema_type, $id = null ): array { //phpcs:ignore
+
+		// If an ID is provided, get the mapping for that specific product meta
+		if ( $id ) {
+			$customMapping = get_post_meta( $id, 'product_schema_mapping', true );
+
+			return $customMapping ?: $this->default_mappings;
+		}
+
 		// Get the user-defined mapping from the database
 		$customMapping = get_option( 'product_schema_mapping', array() );
 
@@ -58,7 +67,12 @@ class ProductMapping extends MappingAbstract {
 	 *
 	 * @param array $userMapping The user-defined mapping to save.
 	 */
-	public function saveMapping( array $userMapping ): bool {
+	public function saveMapping( array $userMapping, $id = null ): bool {
+		// If an ID is provided, save the mapping to the post meta
+		if ( $id ) {
+			return update_post_meta( $id, 'product_schema_mapping', $userMapping );
+		}
+
 		// Save the user-defined mapping to the database
 		return update_option( 'product_schema_mapping', $userMapping );
 	}

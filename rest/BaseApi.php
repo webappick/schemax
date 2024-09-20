@@ -42,11 +42,13 @@ class BaseApi {
 	 * @return void
 	 */
 	public function register_rest_api(): void {
+		// Register the Settings API routes
 		$settingsApi = new SettingsApi();
 		$settingsApi->register_routes();
 
-//		$productApi = new ProductApi(); // Example: for a Product-related API
-//		$productApi->register_routes();
+		// Register the Mapping API routes
+		$mappingApi = new MappingApi();
+		$mappingApi->register_routes();
 
 		// Add other API classes as needed
 	}
