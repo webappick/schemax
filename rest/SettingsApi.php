@@ -1,7 +1,8 @@
 <?php
-namespace Schemax\App\Api;
+namespace Schemax\Rest;
 
-use Schemax\App\SettingsManager;
+use Schemax\App\Utils\Settings;
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
@@ -11,7 +12,7 @@ class SettingsApi extends WP_REST_Controller
 	/**
 	 * Register the routes for settings.
 	 */
-	public function registerRoutes(): void
+	public function register_routes(): void
 	{
 		register_rest_route(
 			'schemax/v1',
@@ -27,6 +28,11 @@ class SettingsApi extends WP_REST_Controller
 					'callback'            => [$this, 'updateSettings'],
 					'permission_callback' => [$this, 'permissionsCheck'],
 					'args'                => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+				],
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [$this, 'resetSettings'],
+					'permission_callback' => [$this, 'permissionsCheck'],
 				],
 			]
 		);
@@ -47,7 +53,8 @@ class SettingsApi extends WP_REST_Controller
 	 */
 	public function getAllSettings(WP_REST_Request $request): \WP_REST_Response
 	{
-		$settings = SettingsManager::getAllSettings();
+
+		$settings = Settings::getAllSettings();
 		return rest_ensure_response($settings);
 	}
 
@@ -59,6 +66,7 @@ class SettingsApi extends WP_REST_Controller
 	 */
 	public function updateSettings(WP_REST_Request $request)
 	{
+
 		// Sanitize and prepare the settings
 		$settings = $this->prepare_item_for_database($request);
 
@@ -70,24 +78,45 @@ class SettingsApi extends WP_REST_Controller
 			return $valid_settings;
 		}
 
+
 		// Save the settings
-		$saved = SettingsManager::saveSettings($valid_settings);
+		$saved = Settings::saveSettings($settings);
 		if (!$saved) {
 			return new \WP_Error('rest_not_updated', __('Settings could not be updated.', 'schemax'), ['status' => 500]);
 		}
 
 		// Fetch the updated settings
-		$updated_settings = SettingsManager::getAllSettings();
+		$updated_settings = Settings::getAllSettings();
 		return rest_ensure_response($updated_settings);
 	}
 
 	/**
-	 * Prepare item for saving to the database.
+	 * Reset settings to default values.
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return array Prepared and sanitized settings.
+	 * @return \WP_REST_Response|WP_Error The response after resetting settings.
 	 */
-	protected function prepare_item_for_database(WP_REST_Request $request): array
+	public function resetSettings(WP_REST_Request $request): \WP_REST_Response
+	{
+		// Reset the settings using SettingsManager
+		$reset = Settings::resetSettings();
+
+		if (!$reset) {
+			return new \WP_Error('rest_not_reset', __('Failed to reset settings.', 'schemax'), ['status' => 500]);
+		}
+
+		// Fetch the default settings
+		$default_settings = Settings::getAllSettings();
+		return rest_ensure_response($default_settings);
+	}
+
+	/**
+	 * Prepares one item for create or update operation.
+	 *
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 * @return object|WP_Error The prepared item, or WP_Error object on failure.
+	 */
+	public function prepare_item_for_database($request): array
 	{
 		$prepared_settings = [];
 
@@ -107,6 +136,7 @@ class SettingsApi extends WP_REST_Controller
 
 		return $prepared_settings;
 	}
+
 
 	/**
 	 * Define the settings schema for validation.

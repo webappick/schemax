@@ -1,7 +1,7 @@
 <?php
-namespace Schemax\App;
+namespace Schemax\App\Utils;
 
-class SettingsManager
+class Settings
 {
 	// The name of the option where settings will be stored
 	protected static $optionName = 'schemax_settings';
@@ -86,5 +86,16 @@ class SettingsManager
 
 		// Save the new settings
 		return update_option(self::$optionName, $newSettings);
+	}
+
+	/**
+	 * Reset settings to default values.
+	 *
+	 * @return bool True if reset successfully, false otherwise.
+	 */
+	public static function resetSettings(): bool
+	{
+		// Save the default settings
+		return update_option(self::$optionName, self::$defaultSettings);
 	}
 }

@@ -13,6 +13,7 @@
 namespace Schemax\Engine;
 
 use Schemax\Engine;
+use Schemax\Rest\BaseApi;
 
 /**
  * Schemax Initializer
@@ -55,6 +56,7 @@ class Initialize {
 
 		if ( $this->content->request( 'rest' ) ) {
 			$this->get_classes( 'Rest' );
+			new BaseApi();
 		}
 
 		if ( $this->content->request( 'cli' ) ) {
