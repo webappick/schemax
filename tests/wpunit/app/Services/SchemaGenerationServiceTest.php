@@ -76,12 +76,12 @@ class SchemaGenerationServiceTest extends WPTestCase {
 		$product->set_status( 'publish' );
 		$product->save();
 
-//		$productData = new \Schemax\App\Data\ProductData();
-//		$mappings = MappingFactory::get( 'product' );
-//		//$data = $postData->fetchData( $mappings, $post );
-//		$data = $productData->prepareData( $mappings, $product );
+		$productData = new \Schemax\App\Data\ProductData();
+		$mappings = MappingFactory::get( 'product' );
+		//$data = $postData->fetchData( $mappings, $post );
+		$data = $productData->prepareData( $mappings, $product );
 
-//		codecept_debug( $data );
+		codecept_debug( $data );
 
 //		// Initialize the MappingManager
 

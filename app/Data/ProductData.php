@@ -64,6 +64,17 @@ class ProductData extends DataAbstract {
 	}
 
 	/**
+	 * Get the product offers.
+	 *
+	 * @param WC_Product $product The product object.
+	 *
+	 * @return string The product id.
+	 */
+	public function get_product_offers( WC_Product $product): string {
+
+	}
+
+	/**
 	 * Get the product id.
 	 *
 	 * @param WC_Product $product The product object.

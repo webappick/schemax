@@ -10,42 +10,7 @@ class ProductSchema extends AbstractSchema {
 			'name'        => [ 'mapping' => 'product_name' ],
 			'description' => [ 'mapping' => 'product_description' ],
 			'sku'         => [ 'mapping' => 'product_sku' ],
-			'offers'      => [
-				'mapping'       => 'product_offers',
-				'lowPrice'      => [ 'mapping' => 'offers_low_price', 'required' => true,'data_type'=>'number' ],
-				'highPrice'     => [ 'mapping' => 'offers_high_price', 'required' => true,'data_type'=>'number' ],
-				'offerCount'    => [ 'mapping' => 'offers_count' ],
-				'availability'  => 'product_stock_status',     // Availability status
-				'itemCondition' => 'product_condition',        // Item condition
-//				'instances'     => [
-//					'Offer' => [
-//						'mapping'               => 'offer_variations',
-//						'@type'                 => 'Offer',
-//						'price'                 => [ 'mapping' => 'offer_price' ],
-//						'priceCurrency'         => [ 'mapping' => 'offer_currency' ],
-//						'acceptedPaymentMethod' => [ 'mapping' => 'offer_payment_methods' ],
-//						'availability'          => 'product_stock_status',
-//						'itemCondition'         => 'product_condition',
-//						'addOn'                 => [ 'mapping' => 'offer_add_ons' ],
-//						'additionalProperty'    => [
-//							'mapping'   => 'offer_additional_properties',
-//							'instances' => [
-//								[
-//									'@type'      => 'PropertyValue',
-//									'propertyID' => [ 'mapping' => 'offer_additional_property_id' ],
-//									'value'      => [ 'mapping' => 'offer_additional_property_value' ],
-//								]
-//							],
-//							'seller'    => [
-//								'mapping' => 'offer_seller',
-//								'@type'   => 'Organization',
-//								'name'    => [ 'mapping' => 'offer_seller_name' ],
-//								'url'     => [ 'mapping' => 'offer_seller_url' ],
-//							],
-//						]
-//					]
-//				],
-			]
+			'offers'      => ['mapping'   => 'product_offers'],
 		];
 	}
 
