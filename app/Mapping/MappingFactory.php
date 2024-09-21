@@ -22,63 +22,60 @@ use Patchwork\Exceptions\NonNullToVoid;
  */
 class MappingFactory {
 
+	/**
+	 * Get the mapping for the specified object type.
+	 *
+	 * @param string $objectType The type of object to get the mapping for.
+	 * @param null   $id         The ID of the object to get the mapping for.
+	 *
+	 * @return array The mapping for the specified object type.
+	 */
+	public static function get( string $objectType, $id = null ): array {
+		$class = self::mappingHandler($objectType);
+		return (new $class())->getMapping($id);
+	}
 
 	/**
-	 * @throws \Patchwork\Exceptions\NonNullToVoid
+	 * Save the mapping for the specified object type.
+	 *
+	 * @param string $objectType The type of object to save the mapping for.
+	 * @param array  $userMapping The mapping data to save.
+	 * @param null   $id         The ID of the object to save the mapping for.
+	 *
+	 * @return bool True if the mapping was saved successfully, false otherwise.
 	 */
-	private function registerMapping($objectType) {
-		switch ( $objectType ) {
-			case 'product':
-				$productMapping = new ProductMapping();
-				$mappingManager = new MappingManager();
-				$mappingManager->registerMapping( $objectType, $productMapping );
+	public static function save(string $objectType,array $userMapping, $id = null ): bool {
+		$class = self::mappingHandler($objectType);
+		return (new $class())->setMapping($userMapping, $id);
+	}
 
-				return $mappingManager;
+	/**
+	 * Reset the mapping for the specified object type.
+	 *
+	 * @param string $objectType The type of object to reset the mapping for.
+	 * @param null   $id         The ID of the object to reset the mapping for.
+	 *
+	 * @return bool True if the mapping was reset successfully, false otherwise.
+	 */
+	public static function reset(string $objectType, $id = null ): bool {
+		$class = self::mappingHandler( $objectType );
+		return ( new $class() )->resetMappingToDefault( $id );
+	}
 
-			case 'article':
-				$articleMapping = new ArticleMapping();
-				$mappingManager = new MappingManager();
-				$mappingManager->registerMapping( $objectType, $articleMapping );
+	/**
+	 * Load the mapping class for the specified object type.
+	 *
+	 * @param string $objectType The type of object to load the mapping class for.
+	 *
+	 * @return object The mapping class for the specified object type.
+	 */
+	protected static function mappingHandler(string $objectType): object {
+		$mappingClass = __NAMESPACE__ . '\\' . ucfirst($objectType) . 'Mapping';
 
-				return $mappingManager;
-
-			default:
-				return [];
+		if (!class_exists($mappingClass)) {
+			throw new \RuntimeException("No mapping class found for schema type: " . $objectType);
 		}
-	}
 
-	/**
-	 * Get the mapping for the given object type.
-	 *
-	 * @param null $id Get mapping for a specific object.
-	 *
-	 * @return array The mapping for the object.
-	 * @throws \Exception
-	 */
-	public function getMapping( $objectType, $id = null ): array {
-		$mappingManager = $this->registerMapping( $objectType );
-		return $mappingManager->getMapping( $objectType, $id );
+		return new $mappingClass();
 	}
-
-	/**
-	 * Save the custom mapping provided by the user.
-	 *
-	 * @param null  $id          Save mapping for a specific object.
-	 * @param array $userMapping The user-defined mapping to save.
-	 *
-	 * @throws NonNullToVoid
-	 */
-	public function saveMapping( array $userMapping, $id = null ): void {
-		$this->mappingManager->saveMapping( $this->objectType, $userMapping, $id );
-	}
-
-	/**
-	 * Reset the mapping for the given object type to the default mapping.
-	 *
-	 * @param null $id Reset mapping for a specific object.
-	 */
-	public function resetMappingToDefault( $id = null ): void {
-		$this->mappingManager->resetMappingToDefault( $this->objectType, $id );
-	}
-
 }

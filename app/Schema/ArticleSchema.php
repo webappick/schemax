@@ -4,7 +4,7 @@ namespace Schemax\App\Schema;
 
 
 class ArticleSchema extends AbstractSchema {
-	protected $schemaType = 'Article';
+	protected $schemaType = 'article';
 
 	/**
 	 * Get the default mappings for the Article schema.
@@ -20,18 +20,23 @@ class ArticleSchema extends AbstractSchema {
 	 */
 	public function getDefaultMappings(): array {
 		return [
+			'name'          => [
+				'mapping' => 'post_title',
+			],
 			'headline'      => [
-				'mapping'   => 'post_title',
-				'instances' => false,
+				'mapping' => 'post_headline',
 			],
 			'description'   => [
-				'mapping' => 'post_excerpt',
+				'mapping' => 'post_content',
 			],
 			'author'        => [
 				'mapping' => 'post_author',
 			],
 			'datePublished' => [
 				'mapping' => 'post_date',
+			],
+			'dateModified'  => [
+				'mapping' => 'post_modified',
 			],
 		];
 	}

@@ -27,18 +27,20 @@ class SchemaGenerationService {
 	 * @throws \Exception
 	 */
 	public function generateSchema( string $objectType, $object ): ?\Spatie\SchemaOrg\BaseType {
-		// Fetch data using the DataFactory based on the object type.
-		$data = DataFactory::getData( $objectType, $object );
 
-		if ( empty( $data ) ) {
-			throw new \RuntimeException( "No data found for the object type: " . $objectType );
-		}
 
 		// Fetch mappings from the MappingFactory.
-		$mapping = $this->mappingFactory->getMapping( $objectType );
+		$mapping = MappingFactory::get( $objectType);
 
 		if ( empty( $mapping ) ) {
 			throw new \RuntimeException( "No mapping found for the object type: " . $objectType );
+		}
+
+		// Fetch data using the DataFactory based on the object type.
+		$data = DataFactory::getData($mapping, $objectType, $object );
+
+		if ( empty( $data ) ) {
+			throw new \RuntimeException( "No data found for the object type: " . $objectType );
 		}
 
 		// Initialize the schema dynamically
@@ -93,11 +95,12 @@ class SchemaGenerationService {
 	 * @throws \Exception
 	 */
 	protected function getSchemaObject( string $objectType ): \Spatie\SchemaOrg\BaseType {
+		$schema = Schema::class;
 		switch ( $objectType ) {
-			case 'Product':
-				return Schema::product();
-			case 'Article':
-				return Schema::article();
+			case 'product':
+				return $schema::product();
+			case 'article':
+				return $schema::article();
 			// Add other cases for different object types if needed
 			default:
 				throw new \RuntimeException( "Unsupported object type: " . $objectType );

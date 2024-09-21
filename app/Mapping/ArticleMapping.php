@@ -42,20 +42,19 @@ class ArticleMapping extends MappingAbstract {
 	 * Get the current mapping for the article schema.
 	 * If no custom mappings exist, fall back to the default.
 	 *
-	 * @param string $schema_type The schema type to get the mapping for. (e.g., 'Article')
 	 * @param null   $id The ID of the article to get the mapping for.
 	 *
 	 * @return array The current mapping for the article schema.
 	 */
-	public function getMapping( string $schema_type, $id = null): array { //phpcs:ignore
+	public function getMapping($id = null): array { //phpcs:ignore
 		// If an ID is provided, get the mapping for that specific article meta
 		if ( $id ) {
-			$customMapping = get_post_meta( $id, 'article_schema_mapping', true );
+			$customMapping = get_post_meta( $id, 'schemax_article_schema_mapping', true );
 
 			return $customMapping ?: $this->default_mappings;
 		}
 		// Get the user-defined mapping from the database
-		$customMapping = get_option( 'schemax_article_mappings', array() );
+		$customMapping = get_option( 'schemax_article_schema_mapping', array() );
 
 		// Merge user mapping with default mapping (user mappings override defaults)
 		return array_merge( $this->default_mappings, $customMapping );
@@ -66,9 +65,13 @@ class ArticleMapping extends MappingAbstract {
 	 *
 	 * @param array $userMapping The user-defined mapping to save.
 	 */
-	public function saveMapping( array $userMapping, $id=null ): bool {
+	public function setMapping( array $userMapping, $id=null ): bool {
+		// If an ID is provided, save the mapping for that specific article meta
+		if ( $id ) {
+			return update_post_meta( $id, 'schemax_article_schema_mapping', $userMapping );
+		}
 		// Save the user-defined mapping to the database
-		return update_option( 'schemax_article_mappings', $userMapping );
+		return update_option( 'schemax_article_schema_mapping', $userMapping );
 	}
 
 }

@@ -31,21 +31,8 @@ abstract class MappingAbstract implements MappingInterface {
 		$this->default_mappings = $default_mappings;
 	}
 
-	public function getMapping( string $schema_type, $id=null): array {
-		// If an ID is provided, get the mapping for that specific product meta
-		if ( $id ) {
-			$customMapping = get_post_meta( $id, "schemax_{$schema_type}_mapping", true );
-			return $customMapping ?: $this->default_mappings;
-		}
-		// Return default mappings or custom ones from the database
-		return get_option( "schemax_{$schema_type}_mappings", $this->default_mappings );
-	}
+	abstract public function getMapping( $id = null ): array;// phpcs:ignore
 
-	public function setMapping( string $schema_type, array $mappingData, $id=null ): bool {
-		if ( $id ) {
-			return update_post_meta( $id, "schemax_{$schema_type}_mapping", $mappingData );
-		}
-		return update_option( "schemax_{$schema_type}_mappings", $mappingData );
-	}
+	abstract public function setMapping( array $userMapping, $id = null ): bool;// phpcs:ignore
 
 }

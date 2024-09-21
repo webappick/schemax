@@ -7,40 +7,25 @@ class PostData extends DataAbstract {
 	/**
 	 * Get the data for the given object type.
 	 *
+	 * @param array  $mapping The mapping for the object.
 	 * @param object $object The ID or Object for the entity.
 	 *
 	 * @return array The data for the object.
 	 */
-	public function fetchData( object $object ): array {
-		$post = get_post( $object );
+	public function fetchData(array $mapping, object $object ): array {
 
 
-		$data = array(
-			'ID'                    => $post->ID,
-			'post_title'            => $post->post_title,
-			'post_content'          => $post->post_content,
-			'post_excerpt'          => $post->post_excerpt,
-			'post_date'             => $post->post_date,
-			'post_author'           => $post->post_author,
-			'post_status'           => $post->post_status,
-			'post_type'             => $post->post_type,
-			'post_name'             => $post->post_name,
-			'post_parent'           => $post->post_parent,
-			'post_modified'         => $post->post_modified,
-			'post_content_filtered' => $post->post_content_filtered,
-			'post_mime_type'        => $post->post_mime_type,
-			'guid'                  => $post->guid,
-			'menu_order'            => $post->menu_order,
-			'comment_count'         => $post->comment_count,
-			'comment_status'        => $post->comment_status,
-			'ping_status'           => $post->ping_status,
-			'pinged'                => $post->pinged,
-			'to_ping'               => $post->to_ping,
-			'post_password'         => $post->post_password
-		);
+		// Validate the id or object first.
+		if (! $object instanceof \WP_Post) {
+			return [];
+		}
 
-		return $data;
+		$post = $object;
 
+		// Prepare the data for the given object
+		$data = $this->prepareData( $mapping, $post );
+
+		return apply_filters( 'schemax_post_data', $data, $post );
 	}
 
 	public function dataKeys(): array {
@@ -48,25 +33,115 @@ class PostData extends DataAbstract {
 		return array(
 			'post_id'               => 'Post ID',
 			'post_title'            => 'Post Title',
+			'post_headline'         => 'Post Meta Title',
 			'post_content'          => 'Post Content',
 			'post_excerpt'          => 'Post Excerpt',
 			'post_date'             => 'Post Date',
+			'post_modified'         => 'Post Modified Date',
 			'post_author'           => 'Post Author',
-			'post_status'           => 'Post Status',
-			'post_type'             => 'Post Type',
-			'post_name'             => 'Post Name',
-			'post_parent'           => 'Post Parent',
-			'post_modified'         => 'Post Modified',
-			'post_content_filtered' => 'Post Content Filtered',
-			'post_mime_type'        => 'Post Mime Type',
-			'guid'                  => 'Post Guid',
-			'menu_order'            => 'Post Menu Order',
-			'comment_count'         => 'Post Comment Count',
-			'comment_status'        => 'Post Comment Status',
-			'ping_status'           => 'Post Ping Status',
-			'pinged'                => 'Post Pinged',
-			'to_ping'               => 'Post To Ping',
-			'post_password'         => 'Post Password'
 		);
+	}
+
+	/**
+	 * Get the post title.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post title.
+	 */
+	public function get_post_title( object $post ): string {
+		return $post->post_title;
+	}
+
+	/**
+	 * Get the post headline.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post headline.
+	 */
+	public function get_post_headline( object $post ): string {
+		setup_postdata( $post ); // Setup post data
+
+		// Apply the 'document_title_parts' filter to get the title parts
+		$title_parts = apply_filters('document_title_parts', [
+			'title' => get_the_title( $post ),
+			'tagline' => get_bloginfo( 'name' ),
+			'site' => get_bloginfo( 'description' ),
+			'separator' => '|'
+		]);
+
+		// Restore original post data after using setup_postdata
+		wp_reset_postdata();
+
+		// Return the constructed title (meta title)
+		return $title_parts['title'] ?? get_the_title( $post );
+	}
+
+	/**
+	 * Get the post content.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post content.
+	 */
+	public function get_post_content( object $post ): string {
+		//TODO: Get settings for the content type (Full Description, Excerpt, Meta Description etc.)
+
+		// Get the raw content
+		$content = get_the_content(null, false, $post);
+
+		// Apply the content filters to format it correctly
+		// Return the formatted content
+		return apply_filters('the_content', $content);
+	}
+
+	/**
+	 * Get the post author full name.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post author.
+	 */
+	public function get_post_author( object $post ): string {
+		$author = get_userdata( $post->post_author );
+		if ( ! $author ) {
+			return '';
+		}
+		return $author->first_name . ' ' . $author->last_name;
+	}
+
+	/**
+	 * Get the post date published.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post date.
+	 */
+	public function get_post_date( object $post ): string {
+		// Check if the post date is empty
+		if ( empty( $post->post_date ) ) {
+			return '';
+		}
+
+		// Return the formatted date
+		return get_post_time('Y-m-d', true, $post);
+	}
+
+	/**
+	 * Get the post date modified.
+	 *
+	 * @param object $post The post object.
+	 *
+	 * @return string The post date.
+	 */
+	public function get_post_modified( object $post ): string {
+		// Check if the post date is empty
+		if ( empty( $post->post_modified ) ) {
+			return '';
+		}
+
+		// Return the formatted date
+		return get_post_modified_time('c', true, $post);
 	}
 }
