@@ -1,0 +1,19 @@
+{
+	"@type": "Person",
+	"name": "John Doe",
+	"url": "https://johndoe.com",
+	"image": "https://johndoe.com/photo.jpg",
+	"sameAs": [
+		"https://twitter.com/johndoe",
+		"https://www.linkedin.com/in/johndoe"
+	],
+	"jobTitle": "Tech Writer",
+	"worksFor": {
+		"@type": "Organization",
+		"name": "Tech Publishing Inc."
+	},
+	"alumniOf": {
+		"@type": "CollegeOrUniversity",
+		"name": "University of Technology"
+	}
+}

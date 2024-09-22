@@ -1,0 +1,58 @@
+{
+	"@context": "https://schema.org",
+	"@type": "Offer",
+	"url": "https://example.com/product/awesome-widget-size-large",
+	"priceCurrency": "USD",
+	"price": "29.99",
+	"priceValidUntil": "2024-12-31",
+	"itemCondition": "https://schema.org/NewCondition",
+	"availability": "https://schema.org/InStock",
+	"seller": {
+		"@type": "Organization",
+		"name": "Tech Store",
+		"url": "https://techstore.com"
+	},
+	"sku": "AW-123-L",
+	"gtin13": "0123456789012",
+	"mpn": "AW-L-56789",
+	"eligibleQuantity": {
+		"@type": "QuantitativeValue",
+		"minValue": 1,
+		"maxValue": 5
+	},
+	"shippingDetails": {
+		"@type": "OfferShippingDetails",
+		"shippingRate": {
+			"@type": "MonetaryAmount",
+			"value": "5.00",
+			"currency": "USD"
+		},
+		"deliveryTime": {
+			"@type": "ShippingDeliveryTime",
+			"transitTime": {
+				"@type": "QuantitativeValue",
+				"minValue": 3,
+				"maxValue": 7,
+				"unitCode": "day"
+			}
+		},
+		"shippingDestination": {
+			"@type": "DefinedRegion",
+			"addressCountry": "US"
+		}
+	},
+	"inventoryLevel": {
+		"@type": "QuantitativeValue",
+		"value": 150
+	},
+	"eligibleRegion": {
+		"@type": "Country",
+		"name": "United States"
+	},
+	"validFrom": "2024-01-01T00:00:00Z",
+	"aggregateRating": {
+		"@type": "AggregateRating",
+		"ratingValue": "4.7",
+		"reviewCount": 150
+	}
+}

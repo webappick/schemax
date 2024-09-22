@@ -1,0 +1,18 @@
+{
+	"@type": "AggregateOffer",
+	"offerCount": 2,
+	"lowPrice": "19.99",
+	"highPrice": "29.99",
+	"priceCurrency": "USD",
+	"availability": "https://schema.org/InStock",
+	"itemCondition": "https://schema.org/NewCondition",
+	"priceValidUntil": "2024-12-31",
+	"priceSpecification": {
+		"@type": "PriceSpecification",
+		"price": "19.99",
+		"valueAddedTaxIncluded": "false",
+		"taxPercentage": "0",
+		"taxFixedAmount": "0"
+	},
+	"offers": []
+}
